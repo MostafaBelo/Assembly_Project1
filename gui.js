@@ -1,5 +1,25 @@
+const codeAreaWrapper = document.getElementById("codeArea");
+const codeLineNumbersArea = document.getElementById("codeLineNumbers");
+const codeArea = document.getElementById("code");
+
 const regsArea = document.getElementById("regs");
+
 const memArea = document.getElementById("mem");
+
+codeAreaWrapper.onclick = (e) => {
+	codeArea.focus();
+};
+codeArea.addEventListener(
+	"input",
+	(e) => {
+		const numberOfLines = e.target.value.split("\n").length;
+
+		codeLineNumbersArea.innerHTML = Array(numberOfLines)
+			.fill("<span></span>")
+			.join("");
+	},
+	false
+);
 
 const regs = [
 	["zero", 0],

@@ -11,6 +11,19 @@
 			<div class="code_regs_wrapper">
 				<div class="codeSection section">
 					<span class="sectionTitle">Code</span>
+					<div class="codeArea" id="codeArea">
+						<div class="line-numbers" id="codeLineNumbers">
+							<span></span>
+						</div>
+						<div class="grow-wrap">
+							<textarea
+								class="code"
+								wrap="off"
+								id="code"
+								oninput="this.parentNode.dataset.replicatedValue = this.value"
+							></textarea>
+						</div>
+					</div>
 				</div>
 				<div class="regsSection section">
 					<span class="sectionTitle">Registers</span>

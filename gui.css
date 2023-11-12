@@ -4,6 +4,7 @@
 	--sectionBorder: #444455;
 	--textLight: #c4cbda;
 	--text: #bdc3d1;
+	--lineNumber: #717888;
 
 	color: var(--text);
 	font-family: "Courier New", Courier, monospace;
@@ -53,6 +54,7 @@
 
 	display: flex;
 	flex-direction: column;
+	gap: 1rem;
 }
 
 .regsSection {
@@ -76,6 +78,58 @@
 .sectionTitle {
 	color: var(--textLight);
 	font-weight: 600;
+}
+
+.codeArea {
+	flex: 1;
+	max-width: 100%;
+
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	overflow: auto;
+}
+
+.grow-wrap {
+	flex: 1;
+	display: grid;
+}
+.grow-wrap::after {
+	content: attr(data-replicated-value) " ";
+	white-space: pre-wrap;
+	visibility: hidden;
+}
+.grow-wrap::after,
+.code {
+	flex: 1;
+	background: none;
+	border: none;
+	outline: none;
+	resize: none;
+	padding: 0px;
+
+	line-height: 1.2rem;
+	/* overflow: hidden; */
+
+	grid-area: 1 / 1 / 2 / 2;
+}
+
+.line-numbers {
+	width: 20px;
+	margin-right: 0.5rem;
+	text-align: right;
+}
+
+.line-numbers span {
+	counter-increment: linenumber;
+}
+
+.line-numbers span::before {
+	content: counter(linenumber);
+	display: block;
+	color: var(--lineNumber);
+
+	line-height: 1.2rem;
 }
 
 .registers {
