@@ -3,7 +3,27 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>RISCV32I Assembler</title>
+		<link rel="stylesheet" href="gui.css" />
 	</head>
-	<body></body>
+	<body>
+		<div class="main">
+			<div class="code_regs_wrapper">
+				<div class="codeSection section">
+					<span class="sectionTitle">Code</span>
+				</div>
+				<div class="regsSection section">
+					<span class="sectionTitle">Registers</span>
+
+					<table class="registers" id="regs">
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="memorySection section">
+				<span class="sectionTitle">Memory</span>
+			</div>
+		</div>
+		<script src="gui.js"></script>
+	</body>
 </html>

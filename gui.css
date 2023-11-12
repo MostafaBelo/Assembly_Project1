@@ -1,0 +1,92 @@
+* {
+	--bg: #1f2228;
+	--sectionBg: #2e3139;
+	--sectionBorder: #444455;
+	--textLight: #c4cbda;
+	--text: #bdc3d1;
+
+	color: var(--text);
+	font-family: "Courier New", Courier, monospace;
+	font-weight: 500;
+}
+
+.main {
+	background-color: var(--bg);
+
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1%;
+
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+.section {
+	background-color: var(--sectionBg);
+	border: 2px solid var(--sectionBorder);
+	border-radius: 8px;
+
+	padding: 0.5rem 1rem;
+
+	box-sizing: border-box;
+}
+
+.code_regs_wrapper {
+	height: 75%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 1%;
+}
+
+.codeSection {
+	height: 100%;
+	width: 65%;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.regsSection {
+	height: 100%;
+	width: 35%;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.memorySection {
+	height: 25%;
+	width: 64.5%;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.sectionTitle {
+	color: var(--textLight);
+	font-weight: 600;
+}
+
+.registers {
+	/* background-color: red; */
+	height: 100%;
+
+	border-collapse: collapse;
+}
+
+.registers,
+.registerName,
+.registerValue {
+	border: 1px solid;
+	text-align: center;
+}
