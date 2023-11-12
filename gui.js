@@ -1,4 +1,5 @@
 const regsArea = document.getElementById("regs");
+const memArea = document.getElementById("mem");
 
 const regs = [
 	["zero", 0],
@@ -34,7 +35,6 @@ const regs = [
 	["t5", 0],
 	["t6", 0],
 ];
-
 let regsText = `<tr class="register">
                     <th class="registerName">Register</th>
                     <th class="registerValue">Value</th>
@@ -50,5 +50,22 @@ for (let i = 0; i < regs.length; i++) {
                 </tr>`;
 	i++;
 }
-
 regsArea.innerHTML = `<tbody>${regsText}</tbody>`;
+
+let memText = `<tr>
+                    <td class="memoryAddress">Address</td>
+                    <td class="memoryValue">+3</td>
+                    <td class="memoryValue">+2</td>
+                    <td class="memoryValue">+1</td>
+                    <td class="memoryValue">+0</td>
+                </tr>`;
+for (let i = 0; i < 6; i++) {
+	memText += `<tr>
+                    <td class="memoryAddress">${i * 4 + 8000}</td>
+                    <td class="memoryValue">0</td>
+                    <td class="memoryValue">0</td>
+                    <td class="memoryValue">0</td>
+                    <td class="memoryValue">0</td>
+                </tr>`;
+}
+memArea.innerHTML = `<tbody>${memText}</tbody>`;
