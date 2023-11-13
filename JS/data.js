@@ -41,7 +41,7 @@ class Memory
 	}
 	read1(address)
 	{
-		return this.mem[address];
+		return this.mem[address] || 0;
 	}
 	write1(address, value)
 	{
@@ -49,8 +49,8 @@ class Memory
 	}
 	read2(address)
 	{
-		let lower8Bits = this.read1(address, lower8Bits); // bitwise AND to get lower 8 bits
-    	let higher8Bits = this.read1(address + 1, higher8Bits); // right shift to get higher 8 bits
+		let lower8Bits = this.read1(address);
+    	let higher8Bits = this.read1(address + 1);
     	return (higher8Bits << 8) | lower8Bits;
 	}
 	write2(address, value)
@@ -62,8 +62,8 @@ class Memory
 	}
 	read4(address)
 	{
-		let lower16Bits = this.read2(address, lower16Bits); // bitwise AND to get lower 8 bits
-    	let higher16Bits = this.read2(address + 1, higher16Bits); // right shift to get higher 8 bits
+		let lower16Bits = this.read2(address);
+    	let higher16Bits = this.read2(address + 1);
     	return (higher16Bits << 16) | lower16Bits;
 	}
 	write4(address, value)

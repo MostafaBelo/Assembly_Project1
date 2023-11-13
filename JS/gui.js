@@ -48,14 +48,13 @@ class UI {
 						<th class="registerName">Register</th>
 						<th class="registerValue">Value</th>
 						</tr>`;
-		for (let i = 0; i < regs.length; i++) {
+		for (let i = 0; i < regs.length; i+=2) {
 			regsText += `<tr class="register">
 							<td class="registerName">${regs[i][0]} [${i}]</td>
 							<td class="registerValue">${regs[i][1]}</td>
 							<td class="registerName">${regs[i + 1][0]} [${i + 1}]</td>
 							<td class="registerValue">${regs[i + 1][1]}</td>
 							</tr>`;
-			i++;
 		}
 		this.regsArea.innerHTML = `<tbody>${regsText}</tbody>`;
 	}
