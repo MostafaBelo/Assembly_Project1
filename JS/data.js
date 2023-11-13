@@ -32,50 +32,36 @@ export const regs = [
 	["t5", 0],
 	["t6", 0],
 ];
-class Memory
-{
+class Memory {
 	mem = {};
-	constructor()
-	{
-	
-	}
-	read1(address)
-	{
+	constructor() {}
+	read1(address) {
 		return this.mem[address] || 0;
 	}
-	write1(address, value)
-	{
+	write1(address, value) {
 		this.mem[address] = value;
 	}
-	read2(address)
-	{
+	read2(address) {
 		let lower8Bits = this.read1(address);
-    	let higher8Bits = this.read1(address + 1);
-    	return (higher8Bits << 8) | lower8Bits;
+		let higher8Bits = this.read1(address + 1);
+		return (higher8Bits << 8) | lower8Bits;
 	}
-	write2(address, value)
-	{
-    	var lower8Bits = value & 0xFF; // bitwise AND to get lower 8 bits
-    	var higher8Bits = value >> 8; // right shift to get higher 8 bits
-    	this.write1(address, lower8Bits);
-    	this.write1(address + 1, higher8Bits);
+	write2(address, value) {
+		var lower8Bits = value & 0xff; // bitwise AND to get lower 8 bits
+		var higher8Bits = value >> 8; // right shift to get higher 8 bits
+		this.write1(address, lower8Bits);
+		this.write1(address + 1, higher8Bits);
 	}
-	read4(address)
-	{
+	read4(address) {
 		let lower16Bits = this.read2(address);
-    	let higher16Bits = this.read2(address + 1);
-    	return (higher16Bits << 16) | lower16Bits;
+		let higher16Bits = this.read2(address + 1);
+		return (higher16Bits << 16) | lower16Bits;
 	}
-	write4(address, value)
-	{
-    	let lower16Bits = value & 0xFFFF; // bitwise AND to get lower 8 bits
-    	let higher16Bits = value >> 16; // right shift to get higher 8 bits
-    	this.write2(address, lower16Bits);
-    	this.write2(address + 1, higher16Bits);
+	write4(address, value) {
+		let lower16Bits = value & 0xffff; // bitwise AND to get lower 8 bits
+		let higher16Bits = value >> 16; // right shift to get higher 8 bits
+		this.write2(address, lower16Bits);
+		this.write2(address + 1, higher16Bits);
 	}
-
-
-
-
-
 }
+export const RAM = new Memory();

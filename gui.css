@@ -159,7 +159,9 @@
 	border-radius: 8px;
 	border: 1px solid var(--sectionBorder);
 	display: flex;
+	flex-direction: row;
 	align-items: center;
+	gap: 0.3rem;
 
 	padding: 0.3rem 1rem;
 
@@ -182,6 +184,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 
 	transition: all 10ms ease-in-out;
 }
@@ -189,6 +192,25 @@
 	background-color: var(--sectionBorder);
 
 	transform: scale(0.9);
+}
+
+.format-btn {
+	background-color: var(--text);
+	color: var(--sectionBg);
+
+	font-weight: 600;
+	padding: 0.2rem;
+	box-sizing: border-box;
+
+	border: 1px solid var(--lineNumber);
+	border-radius: 8px;
+
+	user-select: none;
+	cursor: pointer;
+}
+.format-btn.selected {
+	background-color: var(--sectionBorder);
+	color: var(--text);
 }
 
 .registers {
