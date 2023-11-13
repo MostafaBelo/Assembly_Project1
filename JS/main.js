@@ -1,3 +1,3 @@
-import { regs } from "./gui.js";
+import ui from "./gui.js";
 
-console.log("hello world", regs);
+console.log("hello world");
