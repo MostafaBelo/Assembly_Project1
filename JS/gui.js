@@ -1,5 +1,3 @@
-import { regs } from "./data.js";
-
 class UI {
 	codeAreaWrapper = document.getElementById("codeArea");
 	codeLineNumbersArea = document.getElementById("codeLineNumbers");
@@ -8,9 +6,7 @@ class UI {
 	memArea = document.getElementById("mem");
 
 	constructor() {
-		this.setupCode();
-		this.setupRegisters();
-		this.setupMemory();
+		// this.setup();
 	}
 
 	setupCode() {
@@ -31,8 +27,20 @@ class UI {
 			false
 		);
 	}
+	setupRegisters(regs) {
+		this.updateRegisters(regs);
+	}
+	setupMemory(mem) {
+		this.updateMemory(mem);
+	}
+	setup(regs, mem) {
+		this.setupCode();
+		this.setupRegisters(regs);
+		this.setupMemory(mem);
+	}
 
-	setupRegisters() {
+	updateCode() {}
+	updateRegisters(regs) {
 		// generate regs ui
 		let regsText = `<tr class="register">
 						<th class="registerName">Register</th>
@@ -51,26 +59,30 @@ class UI {
 		}
 		this.regsArea.innerHTML = `<tbody>${regsText}</tbody>`;
 	}
-
-	setupMemory() {
+	updateMemory(mem) {
 		// generate memory ui
 		let memText = `<tr>
-					<td class="memoryAddress">Address</td>
-					<td class="memoryValue">+3</td>
-					<td class="memoryValue">+2</td>
-					<td class="memoryValue">+1</td>
-					<td class="memoryValue">+0</td>
-					</tr>`;
+							<td class="memoryAddress">Address</td>
+							<td class="memoryValue">+3</td>
+							<td class="memoryValue">+2</td>
+							<td class="memoryValue">+1</td>
+							<td class="memoryValue">+0</td>
+						</tr>`;
 		for (let i = 0; i < 6; i++) {
 			memText += `<tr>
-						<td class="memoryAddress">${i * 4 + 8000}</td>
-						<td class="memoryValue">0</td>
-						<td class="memoryValue">0</td>
-						<td class="memoryValue">0</td>
-						<td class="memoryValue">0</td>
+							<td class="memoryAddress">${i * 4 + 8000}</td>
+							<td class="memoryValue">0</td>
+							<td class="memoryValue">0</td>
+							<td class="memoryValue">0</td>
+							<td class="memoryValue">0</td>
 						</tr>`;
 		}
 		this.memArea.innerHTML = `<tbody>${memText}</tbody>`;
+	}
+	update(regs, mem) {
+		this.updateCode();
+		this.updateRegisters(regs);
+		this.updateMemory(mem);
 	}
 }
 

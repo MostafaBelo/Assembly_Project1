@@ -1,3 +1,4 @@
+import { regs } from "./data.js";
 import ui from "./gui.js";
 
-console.log("hello world");
+ui.setup(regs, undefined);
