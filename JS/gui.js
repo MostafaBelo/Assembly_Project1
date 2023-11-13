@@ -5,6 +5,11 @@ class UI {
 	regsArea = document.getElementById("regs");
 	memArea = document.getElementById("mem");
 
+	play_btn = document.getElementById("play-btn");
+	stop_btn = document.getElementById("stop-btn");
+
+	isPlaying = false;
+
 	constructor() {
 		// this.setup();
 	}
@@ -26,6 +31,16 @@ class UI {
 			},
 			false
 		);
+
+		this.play_btn.onclick = (e) => {
+			this.setIsPlaying(true);
+		};
+
+		this.stop_btn.onclick = (e) => {
+			this.setIsPlaying(false);
+		};
+
+		this.updateCode();
 	}
 	setupRegisters(regs) {
 		this.updateRegisters(regs);
@@ -39,7 +54,15 @@ class UI {
 		this.setupMemory(mem);
 	}
 
-	updateCode() {}
+	updateCode() {
+		if (this.isPlaying) {
+			this.play_btn.style.display = "none";
+			this.stop_btn.style.display = "flex";
+		} else {
+			this.play_btn.style.display = "flex";
+			this.stop_btn.style.display = "none";
+		}
+	}
 	updateRegisters(regs) {
 		// generate regs ui
 		let regsText = `<tr class="register">
@@ -48,7 +71,7 @@ class UI {
 						<th class="registerName">Register</th>
 						<th class="registerValue">Value</th>
 						</tr>`;
-		for (let i = 0; i < regs.length; i+=2) {
+		for (let i = 0; i < regs.length; i += 2) {
 			regsText += `<tr class="register">
 							<td class="registerName">${regs[i][0]} [${i}]</td>
 							<td class="registerValue">${regs[i][1]}</td>
@@ -82,6 +105,11 @@ class UI {
 		this.updateCode();
 		this.updateRegisters(regs);
 		this.updateMemory(mem);
+	}
+
+	setIsPlaying(newIsPlaying) {
+		this.isPlaying = newIsPlaying;
+		this.update();
 	}
 }
 

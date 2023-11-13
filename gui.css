@@ -179,7 +179,11 @@
 	box-sizing: border-box;
 	border-radius: 999px;
 
-	translate: all 100ms ease-in-out;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	transition: all 10ms ease-in-out;
 }
 .btn-img:active {
 	background-color: var(--sectionBorder);
