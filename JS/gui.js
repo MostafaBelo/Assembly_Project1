@@ -10,9 +10,17 @@ class UI {
 	play_btn = document.getElementById("play-btn");
 	stop_btn = document.getElementById("stop-btn");
 
-	dec_format_btn = document.getElementById("format-btn-dec");
-	hex_format_btn = document.getElementById("format-btn-hex");
-	bin_format_btn = document.getElementById("format-btn-bin");
+	format_btns = {
+		dec_format_btn: document.getElementById("format-btn-dec"),
+		hex_format_btn: document.getElementById("format-btn-hex"),
+		bin_format_btn: document.getElementById("format-btn-bin"),
+	};
+
+	details_inputs = {
+		pc: document.getElementById("pc-input"),
+		instruction_address: document.getElementById("instruction-address-input"),
+		first_memory_address: document.getElementById("first-memory-address-input"),
+	};
 
 	regs = undefined;
 	mem = undefined;
@@ -60,19 +68,19 @@ class UI {
 		};
 
 		// format buttons
-		this.dec_format_btn.onclick = (e) => {
+		this.format_btns.dec_format_btn.onclick = (e) => {
 			this.removeAllFormatButtonSelections();
-			this.dec_format_btn.classList.add("selected");
+			this.format_btns.dec_format_btn.classList.add("selected");
 			this.setFormat("decimal");
 		};
-		this.hex_format_btn.onclick = (e) => {
+		this.format_btns.hex_format_btn.onclick = (e) => {
 			this.removeAllFormatButtonSelections();
-			this.hex_format_btn.classList.add("selected");
+			this.format_btns.hex_format_btn.classList.add("selected");
 			this.setFormat("hexadecimal");
 		};
-		this.bin_format_btn.onclick = (e) => {
+		this.format_btns.bin_format_btn.onclick = (e) => {
 			this.removeAllFormatButtonSelections();
-			this.bin_format_btn.classList.add("selected");
+			this.format_btns.bin_format_btn.classList.add("selected");
 			this.setFormat("binary");
 		};
 
@@ -84,12 +92,25 @@ class UI {
 	setupMemory() {
 		this.updateMemory();
 	}
+	setupDetails() {
+		this.details_inputs.first_memory_address.value =
+			this.firstAddress.toString();
+		this.details_inputs.first_memory_address.oninput = (e) => {
+			let address = this.details_inputs.first_memory_address.value;
+			console.log(typeof address);
+			this.firstAddress = parseInt(address);
+			this.update();
+		};
+
+		this.updateDetails();
+	}
 	setup(regs, mem) {
 		if (regs !== undefined) this.setRegs(regs);
 		if (mem !== undefined) this.setMem(mem);
 		this.setupCode();
 		this.setupRegisters();
 		this.setupMemory();
+		this.setupDetails();
 	}
 
 	updateCode() {
@@ -168,16 +189,20 @@ class UI {
 		}
 		this.memArea.innerHTML = `<tbody>${memText}</tbody>`;
 	}
+	updateDetails() {
+		// TODO: adjust pc
+	}
 	update() {
 		this.updateCode();
 		this.updateRegisters();
 		this.updateMemory();
+		this.updateDetails();
 	}
 
 	removeAllFormatButtonSelections() {
-		this.dec_format_btn.classList.remove("selected");
-		this.hex_format_btn.classList.remove("selected");
-		this.bin_format_btn.classList.remove("selected");
+		this.format_btns.dec_format_btn.classList.remove("selected");
+		this.format_btns.hex_format_btn.classList.remove("selected");
+		this.format_btns.bin_format_btn.classList.remove("selected");
 	}
 
 	setIsPlaying(newIsPlaying) {
