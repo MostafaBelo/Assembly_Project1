@@ -7,8 +7,11 @@ class UI {
 	regsArea = document.getElementById("regs");
 	memArea = document.getElementById("mem");
 
-	play_btn = document.getElementById("play-btn");
-	stop_btn = document.getElementById("stop-btn");
+	code_actions_btns = {
+		open_file_input: document.getElementById("open-file-choose-input"),
+		play_btn: document.getElementById("play-btn"),
+		stop_btn: document.getElementById("stop-btn"),
+	};
 
 	format_btns = {
 		dec_format_btn: document.getElementById("format-btn-dec"),
@@ -59,11 +62,26 @@ class UI {
 			false
 		);
 
+		this.code_actions_btns.open_file_input.onchange = (e) => {
+			let file = this.code_actions_btns.open_file_input.files[0];
+
+			let reader = new FileReader();
+			reader.readAsText(file, "UTF-8");
+
+			reader.onload = (readerEvent) => {
+				let content = readerEvent.target.result;
+
+				// check if running?
+				this.codeArea.value = content;
+				this.codeArea.dispatchEvent(new Event("input"));
+			};
+		};
+
 		// setting playing mode with button click
-		this.play_btn.onclick = (e) => {
+		this.code_actions_btns.play_btn.onclick = (e) => {
 			this.setIsPlaying(true);
 		};
-		this.stop_btn.onclick = (e) => {
+		this.code_actions_btns.stop_btn.onclick = (e) => {
 			this.setIsPlaying(false);
 		};
 
@@ -115,11 +133,11 @@ class UI {
 
 	updateCode() {
 		if (this.isPlaying) {
-			this.play_btn.style.display = "none";
-			this.stop_btn.style.display = "flex";
+			this.code_actions_btns.play_btn.style.display = "none";
+			this.code_actions_btns.stop_btn.style.display = "flex";
 		} else {
-			this.play_btn.style.display = "flex";
-			this.stop_btn.style.display = "none";
+			this.code_actions_btns.play_btn.style.display = "flex";
+			this.code_actions_btns.stop_btn.style.display = "none";
 		}
 	}
 	updateRegisters() {
