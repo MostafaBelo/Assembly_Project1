@@ -9,4 +9,3 @@ RAM.write1(8001, 21);
 RAM.write1(8017, 4);
 RAM.write1(8008, 106);
 ui.setup(regs, RAM);
-console.log(convertToHexAndBinary(21));

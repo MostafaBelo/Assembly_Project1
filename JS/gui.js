@@ -19,6 +19,12 @@ class UI {
 		bin_format_btn: document.getElementById("format-btn-bin"),
 	};
 
+	code_tabs = {
+		code_tab: document.getElementById("code-tab"),
+		data_tab: document.getElementById("data-tab"),
+		execution_tab: document.getElementById("execution-tab"),
+	};
+
 	details_inputs = {
 		pc: document.getElementById("pc-input"),
 		instruction_address: document.getElementById("instruction-address-input"),
@@ -32,6 +38,11 @@ class UI {
 
 	firstAddress = 8000;
 	visibleFormat = "decimal";
+
+	currentTab = "code";
+
+	codeContent = "";
+	dataContnet = "";
 
 	constructor() {
 		// this.setup();
@@ -53,11 +64,15 @@ class UI {
 		this.codeArea.addEventListener(
 			"input",
 			(e) => {
-				const numberOfLines = e.target.value.split("\n").length;
+				let content = e.target.value;
+				const numberOfLines = content.split("\n").length;
 
 				this.codeLineNumbersArea.innerHTML = Array(numberOfLines)
 					.fill("<span></span>")
 					.join("");
+
+				if (this.currentTab === "code") this.codeContent = content;
+				else if (this.currentTab === "data") this.dataContnet = content;
 			},
 			false
 		);
@@ -73,7 +88,7 @@ class UI {
 
 				// check if running?
 				this.codeArea.value = content;
-				this.codeArea.dispatchEvent(new Event("input"));
+				this.update();
 			};
 		};
 
@@ -100,6 +115,23 @@ class UI {
 			this.removeAllFormatButtonSelections();
 			this.format_btns.bin_format_btn.classList.add("selected");
 			this.setFormat("binary");
+		};
+
+		// tab buttons
+		this.code_tabs.code_tab.onclick = (e) => {
+			this.removeAllTabButtonSelections();
+			this.code_tabs.code_tab.classList.add("selected");
+			this.setCurrentTab("code");
+		};
+		this.code_tabs.data_tab.onclick = (e) => {
+			this.removeAllTabButtonSelections();
+			this.code_tabs.data_tab.classList.add("selected");
+			this.setCurrentTab("data");
+		};
+		this.code_tabs.execution_tab.onclick = (e) => {
+			this.removeAllTabButtonSelections();
+			this.code_tabs.execution_tab.classList.add("selected");
+			this.setCurrentTab("execution");
 		};
 
 		this.updateCode();
@@ -139,6 +171,19 @@ class UI {
 			this.code_actions_btns.play_btn.style.display = "flex";
 			this.code_actions_btns.stop_btn.style.display = "none";
 		}
+		this.codeArea.dispatchEvent(new Event("input"));
+	}
+	updateCodeTab() {
+		if (this.currentTab === "code") {
+			this.codeArea.value = this.codeContent;
+			this.codeArea.placeholder = "";
+		} else if (this.currentTab === "data") {
+			this.codeArea.value = this.dataContnet;
+			this.codeArea.placeholder = `Address(Decimal) : Data(1 Byte, Decimal)
+8000 : 5`;
+		}
+
+		this.update();
 	}
 	updateRegisters() {
 		let regs = this.regs;
@@ -222,6 +267,11 @@ class UI {
 		this.format_btns.hex_format_btn.classList.remove("selected");
 		this.format_btns.bin_format_btn.classList.remove("selected");
 	}
+	removeAllTabButtonSelections() {
+		this.code_tabs.code_tab.classList.remove("selected");
+		this.code_tabs.data_tab.classList.remove("selected");
+		this.code_tabs.execution_tab.classList.remove("selected");
+	}
 
 	setIsPlaying(newIsPlaying) {
 		this.isPlaying = newIsPlaying;
@@ -235,6 +285,16 @@ class UI {
 		}
 
 		this.update();
+	}
+	setCurrentTab(newTab) {
+		if (this.currentTab === newTab) return;
+		if (["code", "data", "execution"].includes(newTab)) {
+			this.currentTab = newTab;
+		} else {
+			this.currentTab = "code";
+		}
+
+		this.updateCodeTab();
 	}
 }
 
