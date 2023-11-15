@@ -1,37 +1,136 @@
-export const regs = [
-	["zero", 0],
-	["ra", 0],
-	["sp", 0],
-	["gp", 0],
-	["tp", 0],
-	["t0", 0],
-	["t1", 0],
-	["t2", 0],
-	["s0", 0],
-	["s1", 0],
-	["a0", 0],
-	["a1", 0],
-	["a2", 0],
-	["a3", 0],
-	["a4", 0],
-	["a5", 0],
-	["a6", 0],
-	["a7", 0],
-	["s2", 0],
-	["s3", 0],
-	["s4", 0],
-	["s5", 0],
-	["s6", 0],
-	["s7", 0],
-	["s8", 0],
-	["s9", 0],
-	["s10", 0],
-	["s11", 0],
-	["t3", 0],
-	["t4", 0],
-	["t5", 0],
-	["t6", 0],
-];
+export class RegisterFile
+{
+	regs = [
+		["zero", 0],
+		["ra", 0],
+		["sp", 0],
+		["gp", 0],
+		["tp", 0],
+		["t0", 0],
+		["t1", 0],
+		["t2", 0],
+		["s0", 0],
+		["s1", 0],
+		["a0", 0],
+		["a1", 0],
+		["a2", 0],
+		["a3", 0],
+		["a4", 0],
+		["a5", 0],
+		["a6", 0],
+		["a7", 0],
+		["s2", 0],
+		["s3", 0],
+		["s4", 0],
+		["s5", 0],
+		["s6", 0],
+		["s7", 0],
+		["s8", 0],
+		["s9", 0],
+		["s10", 0],
+		["s11", 0],
+		["t3", 0],
+		["t4", 0],
+		["t5", 0],
+		["t6", 0],
+	];
+
+	regNames = [	
+		"zero",
+		"ra",
+		"sp",
+		"gp",
+		"tp",
+		"t0",
+		"t1",
+		"t2",
+		"s0",
+		"s1",
+		"a0",
+		"a1",
+		"a2",
+		"a3",
+		"a4",
+		"a5",
+		"a6",
+		"a7",
+		"s2",
+		"s3",
+		"s4",
+		"s5",
+		"s6",
+		"s7",
+		"s8",
+		"s9",
+		"s10",
+		"s11",
+		"t3",
+		"t4",
+		"t5",
+		"t6",
+	];
+
+	getIndex(regName)
+	{
+		if (typeof regName === "string") 
+		{
+			regName = regName.toLowerCase();
+			let i = this.regNames.indexOf(regName);
+
+		if(i !== -1)
+		{
+			return i;
+		}
+		else if(regName.length <= 3 && regName[0] === 'x'  )
+		{
+			regName = regName.slice(1); // Remove the first character
+
+			if(isNaN(regName))
+			{
+				throw new Error('Invalid register name');
+			}
+
+			i = parseInt(regName);
+			if(i < 0 || i >= this.regs.length)
+			{
+				throw new Error('Invalid register index');
+			}
+			return i; // the value inside the register
+		}
+		
+			throw new Error('Invalid register name');
+		}
+		else if(typeof regName === "number")
+		{
+			if(regName < 0 || regName >= this.regs.length)
+			{
+				throw new Error('Invalid register index');
+			}
+			return regName;
+		}
+		
+		throw new Error('Invalid register name');
+	}
+
+	read(regName)
+	{
+		let i = this.getIndex(regName);
+		return this.regs[i][1]; // the value inside the register
+	}
+
+	write(regName, value)
+	{
+		let i = this.getIndex(regName);
+		if (i == 0)
+		{
+			return;
+		}
+
+		value = value & 0xFFFFFFFF; // bitwise AND to get lower 32 bits
+		this.regs[i][1] = value;
+	}
+
+}
 export class Memory
 {
 	mem = {};
@@ -100,4 +199,6 @@ export class Memory
     	this.write2(address + 1, higher16Bits);
 	}
 }
+
+export const regs = new RegisterFile();
 export const RAM = new Memory();
