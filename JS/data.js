@@ -32,20 +32,30 @@ export const regs = [
 	["t5", 0],
 	["t6", 0],
 ];
-class Memory
+export class Memory
 {
 	mem = {};
-	constructor()
+	memorySize;
+	constructor(size)
 	{
-	
+		this.memorySize = size;
 	}
+
+	
 	read1(address)
 	{
 		return this.mem[address] || 0;
 	}
 	write1(address, value)
 	{
-		this.mem[address] = value;
+		if(address < 0 || address >= this.memorySize)
+		{
+			throw new Error('Address out of bounds');
+		}
+
+		let binaryStr = value.toString(2); // Convert value to binary
+   		binaryStr = binaryStr.padStart(8, '0'); // Pad with leading zeros
+    	this.mem[address] = binaryStr; // Write padded binary string to memory
 	}
 	read2(address)
 	{
@@ -55,10 +65,19 @@ class Memory
 	}
 	write2(address, value)
 	{
-    	var lower8Bits = value & 0xFF; // bitwise AND to get lower 8 bits
-    	var higher8Bits = value >> 8; // right shift to get higher 8 bits
-    	this.write1(address, lower8Bits);
-    	this.write1(address + 1, higher8Bits);
+		if(address < 0 || address >= this.memorySize)
+		{
+			throw new Error('Address out of bounds');
+		}
+    	let lower8Bits = value & 0xFF; // bitwise AND to get lower 8 bits
+    	let higher8Bits = value >> 8; // right shift to get higher 8 bits
+
+		 // Convert to padded binary strings
+		let lower8BitsStr = lower8Bits.toString(2).padStart(8, '0');
+    	let higher8BitsStr = higher8Bits.toString(2).padStart(8, '0');
+
+    	this.write1(address, lower8BitsStr);
+    	this.write1(address + 1, higher8BitsStr);
 	}
 	read4(address)
 	{
@@ -68,13 +87,20 @@ class Memory
 	}
 	write4(address, value)
 	{
+		if(address < 0 || address >= this.memorySize)
+		{
+			throw new Error('Address out of bounds');
+		}
     	let lower16Bits = value & 0xFFFF; // bitwise AND to get lower 8 bits
     	let higher16Bits = value >> 16; // right shift to get higher 8 bits
-    	this.write2(address, lower16Bits);
-    	this.write2(address + 1, higher16Bits);
+
+		 // Convert to padded binary strings
+		let lower16BitsStr = lower16Bits.toString(2).padStart(16, '0');
+		let higher16BitsStr = higher16Bits.toString(2).padStart(16, '0');
+
+    	this.write2(address, lower16BitsStr);
+    	this.write2(address + 1, higher16BitsStr);
 	}
-
-
 
 
 
