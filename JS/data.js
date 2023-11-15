@@ -4,9 +4,9 @@ export const regs = [
 	["sp", 0],
 	["gp", 0],
 	["tp", 0],
-	["t0", 21],
-	["t1", 22],
-	["t2", 23],
+	["t0", 0],
+	["t1", 0],
+	["t2", 0],
 	["s0", 0],
 	["s1", 0],
 	["a0", 0],
@@ -35,10 +35,14 @@ export const regs = [
 export class Memory
 {
 	mem = {};
-	memorySize;
+	memorySize= 0xFFFFFFFF + 1;
 	constructor(size)
 	{
-		this.memorySize = size;
+		if(size !== undefined)
+		{
+			this.memorySize = size;
+		}  
+
 	}
 
 	
@@ -53,15 +57,14 @@ export class Memory
 			throw new Error('Address out of bounds');
 		}
 
-		let binaryStr = value.toString(2); // Convert value to binary
-   		binaryStr = binaryStr.padStart(8, '0'); // Pad with leading zeros
-    	this.mem[address] = binaryStr; // Write padded binary string to memory
+		value = value & 0xFF; // bitwise AND to get lower 8 bits
+
+    	this.mem[address] = value; 
 	}
-	read2(address)
-	{
+	read2(address) {
 		let lower8Bits = this.read1(address);
-    	let higher8Bits = this.read1(address + 1);
-    	return (higher8Bits << 8) | lower8Bits;
+		let higher8Bits = this.read1(address + 1);
+		return (higher8Bits << 8) | lower8Bits;
 	}
 	write2(address, value)
 	{
@@ -69,21 +72,18 @@ export class Memory
 		{
 			throw new Error('Address out of bounds');
 		}
+		value = value & 0xFFFF; // bitwise AND to get lower 16 bits
     	let lower8Bits = value & 0xFF; // bitwise AND to get lower 8 bits
     	let higher8Bits = value >> 8; // right shift to get higher 8 bits
 
-		 // Convert to padded binary strings
-		let lower8BitsStr = lower8Bits.toString(2).padStart(8, '0');
-    	let higher8BitsStr = higher8Bits.toString(2).padStart(8, '0');
 
-    	this.write1(address, lower8BitsStr);
-    	this.write1(address + 1, higher8BitsStr);
+    	this.write1(address, lower8Bits);
+    	this.write1(address + 1, higher8Bits);
 	}
-	read4(address)
-	{
+	read4(address) {
 		let lower16Bits = this.read2(address);
-    	let higher16Bits = this.read2(address + 1);
-    	return (higher16Bits << 16) | lower16Bits;
+		let higher16Bits = this.read2(address + 1);
+		return (higher16Bits << 16) | lower16Bits;
 	}
 	write4(address, value)
 	{
@@ -91,17 +91,13 @@ export class Memory
 		{
 			throw new Error('Address out of bounds');
 		}
-    	let lower16Bits = value & 0xFFFF; // bitwise AND to get lower 8 bits
-    	let higher16Bits = value >> 16; // right shift to get higher 8 bits
+		value = value & 0xFFFFFFFF; // bitwise AND to get lower 32 bits
 
-		 // Convert to padded binary strings
-		let lower16BitsStr = lower16Bits.toString(2).padStart(16, '0');
-		let higher16BitsStr = higher16Bits.toString(2).padStart(16, '0');
+    	let lower16Bits = value & 0xFFFF; // bitwise AND to get lower 16 bits
+    	let higher16Bits = value >> 16; // right shift to get higher 16 bits
 
-    	this.write2(address, lower16BitsStr);
-    	this.write2(address + 1, higher16BitsStr);
+    	this.write2(address, lower16Bits);
+    	this.write2(address + 1, higher16Bits);
 	}
-
-
-
 }
+export const RAM = new Memory();

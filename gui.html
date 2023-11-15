@@ -11,6 +11,39 @@
 			<div class="code_regs_wrapper">
 				<div class="codeSection section">
 					<span class="sectionTitle">Code</span>
+					<div class="codeActionsWrapper">
+						<input
+							id="open-file-choose-input"
+							type="file"
+							style="position: fixed; top: -100rem"
+						/>
+						<label for="open-file-choose-input">
+							<img class="svgIcon btn-img" src="./svgs/open.svg" alt="" />
+						</label>
+						<img
+							id="play-btn"
+							class="svgIcon btn-img"
+							src="./svgs/play.svg"
+							alt=""
+						/>
+						<img
+							id="stop-btn"
+							class="svgIcon btn-img"
+							src="./svgs/stop.svg"
+							alt=""
+						/>
+						<!-- <img class="svgIcon btn-img" src="./svgs/pause.svg" alt="" /> -->
+						<img class="svgIcon btn-img" src="./svgs/arrow-right.svg" alt="" />
+						<img class="svgIcon btn-img" src="./svgs/skip-forward.svg" alt="" />
+						<span id="format-btn-dec" class="format-btn selected">Decimal</span>
+						<span id="format-btn-hex" class="format-btn">Hexadecimal</span>
+						<span id="format-btn-bin" class="format-btn">Binary</span>
+					</div>
+					<div class="code-tabs">
+						<span id="code-tab" class="code-tab selected">Code</span>
+						<span id="data-tab" class="code-tab">Data</span>
+						<span id="execution-tab" class="code-tab">Execution</span>
+					</div>
 					<div class="codeArea" id="codeArea">
 						<div class="line-numbers" id="codeLineNumbers">
 							<span></span>
@@ -33,12 +66,64 @@
 					</table>
 				</div>
 			</div>
-			<div class="memorySection section">
-				<span class="sectionTitle">Memory</span>
+			<div class="memory_details_wrapper">
+				<div class="memorySection section">
+					<span class="sectionTitle">Memory</span>
 
-				<table class="memory" id="mem">
-					<tbody></tbody>
-				</table>
+					<table class="memory" id="mem">
+						<tbody></tbody>
+					</table>
+				</div>
+
+				<div class="detailsSection section">
+					<span class="sectionTitle">Details</span>
+
+					<table>
+						<tbody>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+							</tr>
+
+							<tr>
+								<td class="detailsTableData">PC</td>
+								<td class="detailsTableData">
+									<input
+										class="details-input"
+										type="number"
+										id="pc-input"
+										value="0"
+										disabled
+									/>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="detailsTableData">Instructions Address</td>
+								<td class="detailsTableData">
+									<input
+										class="details-input"
+										type="number"
+										id="instruction-address-input"
+										value="0"
+									/>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="detailsTableData">First Memory Address</td>
+								<td class="detailsTableData">
+									<input
+										class="details-input"
+										type="number"
+										id="first-memory-address-input"
+										value="0"
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<script src="bundle.js"></script>
