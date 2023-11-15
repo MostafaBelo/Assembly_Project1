@@ -1,5 +1,4 @@
-export class RegisterFile
-{
+export class RegisterFile {
 	regs = [
 		["zero", 0],
 		["ra", 0],
@@ -35,168 +34,111 @@ export class RegisterFile
 		["t6", 0],
 	];
 
-	regNames = [	
-		"zero",
-		"ra",
-		"sp",
-		"gp",
-		"tp",
-		"t0",
-		"t1",
-		"t2",
-		"s0",
-		"s1",
-		"a0",
-		"a1",
-		"a2",
-		"a3",
-		"a4",
-		"a5",
-		"a6",
-		"a7",
-		"s2",
-		"s3",
-		"s4",
-		"s5",
-		"s6",
-		"s7",
-		"s8",
-		"s9",
-		"s10",
-		"s11",
-		"t3",
-		"t4",
-		"t5",
-		"t6",
-	];
+	regNames =
+		"zero ra sp gp tp t0 t1 t2 s0 s1 a0 a1 a2 a3 a4 a5 a6 a7 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 t3 t4 t5 t6".split(
+			" "
+		);
 
-	getIndex(regName)
-	{
-		if (typeof regName === "string") 
-		{
+	getIndex(regName) {
+		if (typeof regName === "string") {
 			regName = regName.toLowerCase();
 			let i = this.regNames.indexOf(regName);
 
-		if(i !== -1)
-		{
-			return i;
-		}
-		else if(regName.length <= 3 && regName[0] === 'x'  )
-		{
-			regName = regName.slice(1); // Remove the first character
+			if (i !== -1) {
+				return i;
+			} else if (regName.length <= 3 && regName[0] === "x") {
+				regName = regName.slice(1);
 
-			if(isNaN(regName))
-			{
-				throw new Error('Invalid register name');
+				if (isNaN(regName)) {
+					throw new Error("Invalid register name");
+				}
+
+				i = parseInt(regName);
+				if (i < 0 || i >= this.regs.length) {
+					throw new Error("Invalid register index");
+				}
+				return i;
 			}
 
-			i = parseInt(regName);
-			if(i < 0 || i >= this.regs.length)
-			{
-				throw new Error('Invalid register index');
-			}
-			return i; // the value inside the register
-		}
-		
-			throw new Error('Invalid register name');
-		}
-		else if(typeof regName === "number")
-		{
-			if(regName < 0 || regName >= this.regs.length)
-			{
-				throw new Error('Invalid register index');
+			throw new Error("Invalid register name");
+		} else if (typeof regName === "number") {
+			if (regName < 0 || regName >= this.regs.length) {
+				throw new Error("Invalid register index");
 			}
 			return regName;
 		}
-		
-		throw new Error('Invalid register name');
+
+		throw new Error("Invalid register name");
 	}
 
-	read(regName)
-	{
+	read(regName) {
 		let i = this.getIndex(regName);
-		return this.regs[i][1]; // the value inside the register
+		return this.regs[i][1];
 	}
 
-	write(regName, value)
-	{
+	write(regName, value) {
 		let i = this.getIndex(regName);
-		if (i == 0)
-		{
+		if (i == 0) {
 			return;
 		}
 
-		value = value & 0xFFFFFFFF; // bitwise AND to get lower 32 bits
+		value = value & 0xffffffff;
 		this.regs[i][1] = value;
 	}
-
 }
-export class Memory
-{
+export class Memory {
 	mem = {};
-	memorySize= 0xFFFFFFFF + 1;
-	constructor(size)
-	{
-		if(size !== undefined)
-		{
+	memorySize = 0xffffffff + 1;
+	constructor(size) {
+		if (size !== undefined) {
 			this.memorySize = size;
-		}  
-
+		}
 	}
 
-	
-	read1(address)
-	{
+	read1(address) {
 		return this.mem[address] || 0;
 	}
-	write1(address, value)
-	{
-		if(address < 0 || address >= this.memorySize)
-		{
-			throw new Error('Address out of bounds');
+	write1(address, value) {
+		if (address < 0 || address >= this.memorySize) {
+			throw new Error("Address out of bounds");
 		}
 
-		value = value & 0xFF; // bitwise AND to get lower 8 bits
+		value = value & 0xff;
 
-    	this.mem[address] = value; 
+		this.mem[address] = value;
 	}
 	read2(address) {
 		let lower8Bits = this.read1(address);
 		let higher8Bits = this.read1(address + 1);
 		return (higher8Bits << 8) | lower8Bits;
 	}
-	write2(address, value)
-	{
-		if(address < 0 || address >= this.memorySize)
-		{
-			throw new Error('Address out of bounds');
+	write2(address, value) {
+		if (address < 0 || address >= this.memorySize) {
+			throw new Error("Address out of bounds");
 		}
-		value = value & 0xFFFF; // bitwise AND to get lower 16 bits
-    	let lower8Bits = value & 0xFF; // bitwise AND to get lower 8 bits
-    	let higher8Bits = value >> 8; // right shift to get higher 8 bits
+		value = value & 0xffff;
+		let lower8Bits = value & 0xff;
+		let higher8Bits = value >> 8;
 
-
-    	this.write1(address, lower8Bits);
-    	this.write1(address + 1, higher8Bits);
+		this.write1(address, lower8Bits);
+		this.write1(address + 1, higher8Bits);
 	}
 	read4(address) {
 		let lower16Bits = this.read2(address);
 		let higher16Bits = this.read2(address + 1);
 		return (higher16Bits << 16) | lower16Bits;
 	}
-	write4(address, value)
-	{
-		if(address < 0 || address >= this.memorySize)
-		{
-			throw new Error('Address out of bounds');
+	write4(address, value) {
+		if (address < 0 || address >= this.memorySize) {
+			throw new Error("Address out of bounds");
 		}
-		value = value & 0xFFFFFFFF; // bitwise AND to get lower 32 bits
+		value = value & 0xffffffff;
 
-    	let lower16Bits = value & 0xFFFF; // bitwise AND to get lower 16 bits
-    	let higher16Bits = value >> 16; // right shift to get higher 16 bits
+		let lower16Bits = value & 0xffff;
+		let higher16Bits = value >> 16;
 
-    	this.write2(address, lower16Bits);
-    	this.write2(address + 1, higher16Bits);
+		this.write2(address, lower16Bits);
+		this.write2(address + 1, higher16Bits);
 	}
 }
 

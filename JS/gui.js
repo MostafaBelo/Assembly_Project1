@@ -186,7 +186,7 @@ class UI {
 		this.update();
 	}
 	updateRegisters() {
-		let regs = this.regs;
+		let regs = this.regs.regs;
 		let format = ["decimal", "hexadecimal", "binary"].indexOf(
 			this.visibleFormat
 		);
@@ -200,8 +200,8 @@ class UI {
 						</tr>`;
 		for (let i = 0; i < regs.length; i += 2) {
 			let vals = [
-				convertToHexAndBinary(regs[i][1]),
-				convertToHexAndBinary(regs[i + 1][1]),
+				convertToHexAndBinary(regs[i][1], 32),
+				convertToHexAndBinary(regs[i + 1][1], 32),
 			];
 			regsText += `<tr class="register">
 							<td class="registerName">${regs[i][0]} [${i}]</td>
@@ -235,10 +235,10 @@ class UI {
 				mem.read1(address + 3),
 			];
 			vals = [
-				convertToHexAndBinary(vals[0]),
-				convertToHexAndBinary(vals[1]),
-				convertToHexAndBinary(vals[2]),
-				convertToHexAndBinary(vals[3]),
+				convertToHexAndBinary(vals[0], 8),
+				convertToHexAndBinary(vals[1], 8),
+				convertToHexAndBinary(vals[2], 8),
+				convertToHexAndBinary(vals[3], 8),
 			];
 			memText += `<tr>
 							<td class="memoryAddress">${address}</td>
