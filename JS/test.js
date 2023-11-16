@@ -26,8 +26,12 @@ memInstance.write1(0, 259); // Writes 00000101 to address 0
 console.log(memInstance.read1(0)); // Should output 00000101
 
 let par = new Parser(
-`L1: add x1,x2,x3
-subi  t0,  x3 , 5`
+	`L1: add x1,x2,x3
+subi  t0,  x3 , 5
+L2:
+jal ra, L1
+beq t0, t1,  L2
+JALR zero, 0(x1)`
 );
 par.seperate_code();
 console.log(par.labels);
