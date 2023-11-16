@@ -1,4 +1,5 @@
 import { Memory } from "./data";
+import { Parser } from "./parser.js";
 
 // for testing the write1, write2, and write4 functions:
 // Create a new Memory object with a size of 10
@@ -23,3 +24,11 @@ console.log(memInstance.read1(6)); // Should output 00000000
 // Test write 1 again
 memInstance.write1(0, 259); // Writes 00000101 to address 0
 console.log(memInstance.read1(0)); // Should output 00000101
+
+let par = new Parser(
+`L1: add x1,x2,x3
+subi  t0,  x3 , 5`
+);
+par.seperate_code();
+console.log(par.labels);
+console.log(par.intsructions);
