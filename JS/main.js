@@ -1,6 +1,7 @@
 import "./test.js";
 
 import { regs, RAM } from "./data.js";
+import { flow } from "./flow.js";
 import ui from "./gui.js";
 
 regs.write("x5", 21);
@@ -13,4 +14,5 @@ RAM.write1(8001, 21);
 RAM.write1(8017, 4);
 RAM.write1(8008, 106);
 
-ui.setup(regs, RAM);
+flow.setupUI(ui);
+ui.setup(regs, RAM, flow);

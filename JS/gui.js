@@ -11,6 +11,9 @@ class UI {
 		open_file_input: document.getElementById("open-file-choose-input"),
 		play_btn: document.getElementById("play-btn"),
 		stop_btn: document.getElementById("stop-btn"),
+
+		next_btn: document.getElementById("next-btn"),
+		fall_through_btn: document.getElementById("fall-through-btn"),
 	};
 
 	format_btns = {
@@ -33,9 +36,16 @@ class UI {
 
 	regs = undefined;
 	mem = undefined;
+	flow = undefined;
 
-	isPlaying = false;
+	onPlay = () => {};
+	onStop = () => {};
+	onNext = () => {};
+	onFallThrough = () => {};
 
+	// isPlaying = false;
+
+	instructionAddress = 0;
 	firstAddress = 8000;
 	visibleFormat = "decimal";
 
@@ -53,6 +63,9 @@ class UI {
 	}
 	setMem(mem) {
 		this.mem = mem;
+	}
+	setFlow(flow) {
+		this.flow = flow;
 	}
 
 	setupCode() {
@@ -94,10 +107,18 @@ class UI {
 
 		// setting playing mode with button click
 		this.code_actions_btns.play_btn.onclick = (e) => {
-			this.setIsPlaying(true);
+			this.onPlay();
 		};
 		this.code_actions_btns.stop_btn.onclick = (e) => {
-			this.setIsPlaying(false);
+			this.onStop();
+		};
+
+		// setting execution actions with button click
+		this.code_actions_btns.next_btn.onclick = (e) => {
+			this.onNext();
+		};
+		this.code_actions_btns.fall_through_btn.onclick = (e) => {
+			this.onFallThrough();
 		};
 
 		// format buttons
@@ -119,18 +140,15 @@ class UI {
 
 		// tab buttons
 		this.code_tabs.code_tab.onclick = (e) => {
-			this.removeAllTabButtonSelections();
-			this.code_tabs.code_tab.classList.add("selected");
+			if (this.flow.isPlaying) return;
 			this.setCurrentTab("code");
 		};
 		this.code_tabs.data_tab.onclick = (e) => {
-			this.removeAllTabButtonSelections();
-			this.code_tabs.data_tab.classList.add("selected");
+			if (this.flow.isPlaying) return;
 			this.setCurrentTab("data");
 		};
 		this.code_tabs.execution_tab.onclick = (e) => {
-			this.removeAllTabButtonSelections();
-			this.code_tabs.execution_tab.classList.add("selected");
+			if (!this.flow.isPlaying) return;
 			this.setCurrentTab("execution");
 		};
 
@@ -147,16 +165,24 @@ class UI {
 			this.firstAddress.toString();
 		this.details_inputs.first_memory_address.oninput = (e) => {
 			let address = this.details_inputs.first_memory_address.value;
-			console.log(typeof address);
 			this.firstAddress = parseInt(address);
+			this.update();
+		};
+
+		this.details_inputs.instruction_address.value =
+			this.instructionAddress.toString();
+		this.details_inputs.instruction_address.oninput = (e) => {
+			let address = this.details_inputs.instruction_address.value;
+			this.instructionAddress = parseInt(address);
 			this.update();
 		};
 
 		this.updateDetails();
 	}
-	setup(regs, mem) {
+	setup(regs, mem, flow) {
 		if (regs !== undefined) this.setRegs(regs);
 		if (mem !== undefined) this.setMem(mem);
+		if (flow !== undefined) this.setFlow(flow);
 		this.setupCode();
 		this.setupRegisters();
 		this.setupMemory();
@@ -164,7 +190,7 @@ class UI {
 	}
 
 	updateCode() {
-		if (this.isPlaying) {
+		if (this.flow.isPlaying) {
 			this.code_actions_btns.play_btn.style.display = "none";
 			this.code_actions_btns.stop_btn.style.display = "flex";
 		} else {
@@ -174,13 +200,25 @@ class UI {
 		this.codeArea.dispatchEvent(new Event("input"));
 	}
 	updateCodeTab() {
+		this.removeAllTabButtonSelections();
 		if (this.currentTab === "code") {
+			this.code_tabs.code_tab.classList.add("selected");
+
 			this.codeArea.value = this.codeContent;
 			this.codeArea.placeholder = "";
 		} else if (this.currentTab === "data") {
+			this.code_tabs.data_tab.classList.add("selected");
+
 			this.codeArea.value = this.dataContnet;
 			this.codeArea.placeholder = `Address(Decimal) : Data(1 Byte, Decimal)
 8000 : 5`;
+		} else if (this.currentTab === "execution") {
+			this.code_tabs.execution_tab.classList.add("selected");
+
+			this.codeArea.value = "";
+			this.codeArea.placeholder = "";
+
+			// TODO: show the commands and highlight the current
 		}
 
 		this.update();
@@ -273,10 +311,6 @@ class UI {
 		this.code_tabs.execution_tab.classList.remove("selected");
 	}
 
-	setIsPlaying(newIsPlaying) {
-		this.isPlaying = newIsPlaying;
-		this.update();
-	}
 	setFormat(newFormat) {
 		if (["decimal", "hexadecimal", "binary"].includes(newFormat)) {
 			this.visibleFormat = newFormat;
