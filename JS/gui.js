@@ -36,6 +36,7 @@ class UI {
 
 	regs = undefined;
 	mem = undefined;
+	pc = undefined;
 	flow = undefined;
 
 	onPlay = () => {};
@@ -63,6 +64,9 @@ class UI {
 	}
 	setMem(mem) {
 		this.mem = mem;
+	}
+	setPC(pc) {
+		this.pc = pc;
 	}
 	setFlow(flow) {
 		this.flow = flow;
@@ -179,9 +183,10 @@ class UI {
 
 		this.updateDetails();
 	}
-	setup(regs, mem, flow) {
+	setup(regs, mem, pc, flow) {
 		if (regs !== undefined) this.setRegs(regs);
 		if (mem !== undefined) this.setMem(mem);
+		if (pc !== undefined) this.setPC(pc);
 		if (flow !== undefined) this.setFlow(flow);
 		this.setupCode();
 		this.setupRegisters();
@@ -292,6 +297,7 @@ class UI {
 	}
 	updateDetails() {
 		// TODO: adjust pc
+		this.details_inputs.pc.value = this.pc.getPC();
 	}
 	update() {
 		this.updateCode();

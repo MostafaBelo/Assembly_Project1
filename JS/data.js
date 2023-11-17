@@ -152,7 +152,7 @@ export class Memory {
 	}
 }
 
-export class PC {
+export class ProgramCounter {
 	pc = 0;
 	constructor() {}
 
@@ -175,3 +175,4 @@ export class PC {
 }
 export const regs = new RegisterFile();
 export const RAM = new Memory();
+export const PC = new ProgramCounter();

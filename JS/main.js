@@ -1,5 +1,5 @@
 import "./test.js";
-import { regs, RAM } from "./data.js";
+import { regs, RAM, PC } from "./data.js";
 import { flow } from "./flow.js";
 import ui from "./gui.js";
 import { Parser } from "./parser.js";
@@ -16,4 +16,4 @@ RAM.write1(8017, 4);
 RAM.write1(8008, 106);
 
 flow.setupUI(ui);
-ui.setup(regs, RAM, flow);
+ui.setup(regs, RAM, PC, flow);

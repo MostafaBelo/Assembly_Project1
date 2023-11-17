@@ -1,3 +1,5 @@
+import { regs, RAM, PC } from "./data.js";
+
 export class Flow {
 	ui = undefined;
 	isPlaying = false;
@@ -31,15 +33,21 @@ export class Flow {
 		this.isPlaying = true;
 		this.ui.setCurrentTab("execution"); // implicitly calls update
 
+		regs.init();
+		RAM.init();
+
 		let AssemblyCode = this.ui.codeContent;
 		let DataCode = this.ui.dataContent;
 
 		let instructionAddress = this.ui.instructionAddress;
-		// load value into PC
+		PC.setPC(instructionAddress);
 
 		// call parser and save its outcome for later execution (maybe as it is already saved in the parser)
 
 		// initialize registers with zeros, sp with max memory, and look into gp and tp
+		regs.write("sp", 0xffffffff); // this is the last memory address, stack grows up
+
+		this.ui.update();
 	}
 
 	executeNext() {
