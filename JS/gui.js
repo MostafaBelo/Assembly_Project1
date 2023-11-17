@@ -296,7 +296,6 @@ class UI {
 		this.memArea.innerHTML = `<tbody>${memText}</tbody>`;
 	}
 	updateDetails() {
-		// TODO: adjust pc
 		this.details_inputs.pc.value = this.pc.getPC();
 	}
 	update() {
