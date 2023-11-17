@@ -101,12 +101,17 @@ export class Parser {
 			let registers = rest.split(",");
 			if (registers[1].includes('('))
 				{
-					registers[1].replaceAll("(", '');
 					registers[1].replaceAll(")", '');
-					registers.push(registers[1][0]);
-					registers[1][0] = '';
+					let temp = registers[1].split('(');
+					registers[1] = temp[1];
+					registers.push(temp[0]);
 				}
 			this.intsructions.push([command, ...registers]);
 		}
+	}
+
+	seperate_data()
+	{
+
 	}
 }
