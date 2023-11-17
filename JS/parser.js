@@ -102,5 +102,6 @@ export class Parser
 			let registers = rest.split(",");
 			this.intsructions.push([command, ...registers]);
 		}
+
 	}
 }

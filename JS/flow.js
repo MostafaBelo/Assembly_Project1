@@ -66,8 +66,58 @@ export class Flow {
 	}
 
 	executeCommand() {
-		// TODO: here is the execution of the command
+		for (const instruction of this.instructions) {
+			const [command] = instruction;
+			switch (command) {
+				case "add":
+					this.registers[rd] = this.registers[rs1] + this.registers[rs2];
+					break;
+				case "addi":
+					// execute addi command
+					break;
+				case "sub":
+					// execute sub command
+					break;
+				case "mul":
+					// execute mul command
+					break;
+				case "div":
+					// execute div command
+					break;
+				case "and":
+					// execute and command
+					break;
+				case "or":
+					// execute or command
+					break;
+				case "xor":
+					// execute xor command
+					break;
+				case "jal":
+					// execute jal command
+					break;
+				case "jalr":
+					// execute jalr command
+					break;
+				case "beq":
+					// execute beq command
+					break;
+				case "bne":
+					// execute bne command
+					break;
+				case "blt":
+					// execute blt command
+					break;
+				case "bge":
+					// execute bge command
+					break;
+				default:
+					// handle unknown command
+					break;
+			}
+		}
 	}
+
 }
 
 export const flow = new Flow();
