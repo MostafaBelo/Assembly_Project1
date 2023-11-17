@@ -86,8 +86,8 @@ export class RegisterFile {
 		this.regs[i][1] = value;
 	}
 
-	init(){
-		for(let i = 0; i < this.regs.length; i++){
+	init() {
+		for (let i = 0; i < this.regs.length; i++) {
 			this.write(i, 0);
 		}
 	}
@@ -147,39 +147,30 @@ export class Memory {
 		this.write2(address + 1, higher16Bits);
 	}
 
-	init(){
+	init() {
 		this.mem = {};
 	}
 }
 
-
-
-export class PC
-{
+export class PC {
 	pc = 0;
-	constructor()
-	{ 
-		this.pc = 0;
-	}
+	constructor() {}
 
-	getPC()
-	{
+	getPC() {
 		return this.pc;
 	}
 
-	setPC(value)
-	{
+	setPC(value) {
+		value = value & 0xffffffff;
 		this.pc = value;
-	}	
-
-	incrementPC()
-	{
-		this.pc += 4;
 	}
-	
-	decrementPC()
-	{
-		this.pc -= 4;
+
+	incrementPC(jumpValue = 4) {
+		this.pc += jumpValue;
+	}
+
+	decrementPC(jumpValue = 4) {
+		this.pc -= jumpValue;
 	}
 }
 export const regs = new RegisterFile();

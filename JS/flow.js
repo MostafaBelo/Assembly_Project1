@@ -117,7 +117,6 @@ export class Flow {
 			}
 		}
 	}
-
 }
 
 export const flow = new Flow();

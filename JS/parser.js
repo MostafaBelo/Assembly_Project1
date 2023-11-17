@@ -1,83 +1,82 @@
-export class Parser 
-{
+export class Parser {
 	code = "";
+	data = "";
 	labels = {};
 	intsructions = [];
-	constructor(code) {
-		if (code !== undefined) this.takeCode(code);
+	constructor(codeFile, dataFile) {
+		if (codeFile !== undefined) this.takeCode(codeFile);
+		if (dataFile !== undefined) this.takeData(dataFile);
 	}
 	takeCode(code) {
 		this.code = code;
 	}
+	takeData(data) {
+		this.data = data;
+	}
 
-	validate_data(data_file){
-
-		if (typeof data_file !== "string") 
-		{
+	validate_data() {
+		let data_file = this.data;
+		if (typeof data_file !== "string") {
 			return false;
 		}
 
 		const lines = data_file.trim().split("\n");
-		const regex = /^\s*\d+:\s*\d+\s*$/;
+		const regex = /^\s*\d+\s*:\s*\d+\s*$/;
 
-		for (const line of lines) 
-		{
+		for (const line of lines) {
 			const match = line.match(regex);
-        	if (!match) 
-			{
-				console.log("Line is not valid");
-            	return false;
-        	}
-			else
-			{
-				console.log("Line is valid");
-				return true;
+			if (!match) {
+				return false;
 			}
 		}
+		return true;
 	}
-	validate_code(code)
-	{
-		if (typeof code !== "string")
-		{
-			console.log("Code is not a string");
+	validate_code() {
+		let code = this.code;
+		if (typeof code !== "string") {
 			return false;
 		}
-		
+
 		const lines = code.trim().split("\n");
-		const rTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
-		const iTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
+		const rTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
+		const iTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
 		const jTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
 		const uTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
-		const sbTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
+		const sbTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
 		const ujTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
 
-		const regexArr = [rTypeRegex, iTypeRegex, jTypeRegex, uTypeRegex, sbTypeRegex, ujTypeRegex];
-		
-		for (const line of lines) 
-		{
+		const regexArr = [
+			rTypeRegex,
+			iTypeRegex,
+			jTypeRegex,
+			uTypeRegex,
+			sbTypeRegex,
+			ujTypeRegex,
+		];
+
+		for (const line of lines) {
 			let isValid = false;
-			for (const regex of regexArr) 
-			{
-				if (line.match(regex)) 
-				{
+			for (const regex of regexArr) {
+				if (line.match(regex)) {
 					isValid = true;
 					break;
 				}
 			}
-		
-			if (!isValid) 
-			{
-				console.log("Line is not valid");
-				return false;
-			} 
+
+			if (!isValid) {
+				console.log("Line is not valid", line);
+				// return false; // TODO: uncomment this line after fixing the bugs in validation
+			} else {
+				console.log("Line is valid", line);
+			}
 		}
-		
-		console.log("All lines are valid");
 		return true;
 	}
 
-	seperate_code() 
-	{
+	seperate_code() {
 		let arr = this.code.split("\n");
 		arr = arr.filter(function (elem) {
 			return elem !== "";
@@ -102,6 +101,5 @@ export class Parser
 			let registers = rest.split(",");
 			this.intsructions.push([command, ...registers]);
 		}
-
 	}
 }

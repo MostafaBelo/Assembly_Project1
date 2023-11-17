@@ -2,7 +2,7 @@ import "./test.js";
 import { regs, RAM } from "./data.js";
 import { flow } from "./flow.js";
 import ui from "./gui.js";
-import { Parser } from './parser.js'; 
+import { Parser } from "./parser.js";
 //import { validate } from "webpack";
 
 regs.write("x5", 21);
@@ -17,11 +17,3 @@ RAM.write1(8008, 106);
 
 flow.setupUI(ui);
 ui.setup(regs, RAM, flow);
-
-const parser = new Parser();
-
-const code = "ADD a1, a2, 1";
-const data = "0: 1";
-
-parser.validate_code(code);
-parser.validate_data (data);
