@@ -80,6 +80,7 @@ export class Parser {
 	}
 
 	seperate_code() {
+		this.code = to_lowercase(this.code);
 		let arr = this.code.split("\n");
 		arr = arr.filter(function (elem) {
 			return elem !== "";
