@@ -39,14 +39,15 @@ export class Parser {
 
 		const lines = code.trim().split("\n");
 		const rTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
 		const iTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
-		const jTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
-		const uTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*(\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
+		const jTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
+		const uTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*(\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
 		const sbTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
-		const ujTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*),\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)s*,\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
+		const ujTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*([a-zA-Z]\w*|[\w:]+)\s*$/; // Matches instructions like "JAL rd, immediate"
+		const labelRegex = /^\s*([a-zA-Z]\w*)\s*:\s*$/; // Matches labels like "L1:"
 
 		const regexArr = [
 			rTypeRegex,
@@ -55,6 +56,7 @@ export class Parser {
 			uTypeRegex,
 			sbTypeRegex,
 			ujTypeRegex,
+			labelRegex,
 		];
 
 		for (const line of lines) {
