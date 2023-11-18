@@ -78,6 +78,9 @@ export class Flow {
 		// initialize registers with zeros, sp with max memory, and look into gp and tp
 		regs.write("sp", 0xffffffff); // this is the last memory address, stack grows up
 
+		// load data file into memory
+		this.loadDataInMemory();
+
 		this.ui.update();
 	}
 
@@ -107,7 +110,17 @@ export class Flow {
 		this.ui.setCurrentTab("code"); // implicitly calls update
 	}
 
+	loadDataInMemory() {
+		console.log("data content", this.parser.data_input);
+		for (let i = 0; i < this.parser.data_input.length; i++) {
+			RAM.write1(this.parser.data_input[i][0], this.parser.data_input[i][1]);
+		}
+	}
 	executeCommand() {
+		if (this.getInstructions().length === this.currentInstruction) {
+			this.isPlaying = false;
+			return;
+		}
 		const instruction = this.getInstructions()[this.currentInstruction]; // [command, register1, register2, etc]
 		let command = instruction[0];
 		let rs1Value;
@@ -123,7 +136,7 @@ export class Flow {
 				this.currentInstruction++;
 				break;
 			case "addi":
-				rs1Value = regs.read(instruction[2])
+				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 				rdValue = rs1Value + rs2Value;
 				regs.write(instruction[1], rdValue);
@@ -138,8 +151,8 @@ export class Flow {
 
 				this.currentInstruction++;
 				break;
-			case "subi":
-				rs1Value = regs.read(instruction[2])
+			case "subi": // not part of the ISA
+				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 				rdValue = rs1Value - rs2Value;
 				regs.write(instruction[1], rdValue);

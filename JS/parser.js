@@ -2,7 +2,7 @@ export class Parser {
 	code = "";
 	data = "";
 	labels = {};
-	intsructions = [];
+	instructions = [];
 	data_input = [];
 	constructor(codeFile, dataFile) {
 		if (codeFile !== undefined) this.takeCode(codeFile);
@@ -47,7 +47,8 @@ export class Parser {
 		const uTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*(\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
 		const sbTypeRegex =
 			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)s*,\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
-		const ujTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*([a-zA-Z]\w*|[\w:]+)\s*$/; // Matches instructions like "JAL rd, immediate"
+		const ujTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*([a-zA-Z]\w*|[\w:]+)\s*$/; // Matches instructions like "JAL rd, immediate"
 		const labelRegex = /^\s*([a-zA-Z]\w*)\s*:\s*$/; // Matches labels like "L1:"
 
 		const regexArr = [
@@ -80,13 +81,21 @@ export class Parser {
 	}
 
 	seperate_code() {
-		this.code = to_lowercase(this.code);
+		this.labels = {};
+		this.instructions = [];
+
+		this.code = this.code.toLowerCase();
 		let arr = this.code.split("\n");
 		arr = arr.filter(function (elem) {
 			return elem !== "";
 		});
 
 		for (let i = 0; i < arr.length; i++) {
+			if (arr[i] === "ecall" || arr[i] === "ebreak" || arr[i] === "fence") {
+				this.instructions.push([arr[i]]);
+				continue;
+			}
+
 			if (arr[i].includes(":")) {
 				let arr2 = arr[i].split(":");
 				arr2[0] = arr2[0].replaceAll(" ", "");
@@ -99,31 +108,31 @@ export class Parser {
 			}
 
 			let index = arr[i].indexOf(" ");
-			let command = arr[i].slice(0, index).toLowerCase();
+			let command = arr[i].slice(0, index);
 			let rest = arr[i].slice(index);
 			rest = rest.replaceAll(" ", "");
 			let registers = rest.split(",");
-			if (registers[1].includes('('))
-				{
-					registers[1] = registers[1].replaceAll(')', '');
-					let temp = registers[1].split('(');
-					registers[1] = temp[1];
-					registers.push(temp[0]);
-				}
-			this.intsructions.push([command, ...registers]);
+			if (registers[1].includes("(")) {
+				registers[1] = registers[1].replaceAll(")", "");
+				let temp = registers[1].split("(");
+				registers[1] = temp[1];
+				registers.push(temp[0]);
+			}
+			this.instructions.push([command, ...registers]);
 		}
 	}
 
-	seperate_data()
-	{
-		let arr = this.data.split('\n');
-		arr = arr.filter(function(elem){return elem !== ''});
-		for (let i = 0; i < arr.length; i++)
-		{
-			arr[i].replaceAll(' ', '');
-			let line = arr[i].split(':');
-			this.data_input([parseInt(line[0]), parseInt(line[1])]);
-		}
+	seperate_data() {
+		this.data_input = [];
 
+		let arr = this.data.split("\n");
+		arr = arr.filter(function (elem) {
+			return elem !== "";
+		});
+		for (let i = 0; i < arr.length; i++) {
+			arr[i] = arr[i].replaceAll(" ", "");
+			let line = arr[i].split(":");
+			this.data_input.push([parseInt(line[0]), parseInt(line[1])]);
+		}
 	}
 }

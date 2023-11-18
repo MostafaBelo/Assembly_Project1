@@ -53,7 +53,7 @@ class UI {
 	currentTab = "code";
 
 	codeContent = "";
-	dataContnet = "";
+	dataContent = "";
 
 	constructor() {
 		// this.setup();
@@ -89,7 +89,7 @@ class UI {
 					.join("");
 
 				if (this.currentTab === "code") this.codeContent = content;
-				else if (this.currentTab === "data") this.dataContnet = content;
+				else if (this.currentTab === "data") this.dataContent = content;
 			},
 			false
 		);
@@ -100,6 +100,7 @@ class UI {
 			let reader = new FileReader();
 			reader.readAsText(file, "UTF-8");
 
+			this.code_actions_btns.open_file_input.value = "";
 			reader.onload = (readerEvent) => {
 				let content = readerEvent.target.result;
 
@@ -198,9 +199,17 @@ class UI {
 		if (this.flow.isPlaying) {
 			this.code_actions_btns.play_btn.style.display = "none";
 			this.code_actions_btns.stop_btn.style.display = "flex";
+
+			if (this.currentTab !== "execution") {
+				this.setCurrentTab("execution");
+			}
 		} else {
 			this.code_actions_btns.play_btn.style.display = "flex";
 			this.code_actions_btns.stop_btn.style.display = "none";
+
+			if (this.currentTab === "execution") {
+				this.setCurrentTab("code");
+			}
 		}
 		this.codeArea.dispatchEvent(new Event("input"));
 	}
@@ -214,7 +223,7 @@ class UI {
 		} else if (this.currentTab === "data") {
 			this.code_tabs.data_tab.classList.add("selected");
 
-			this.codeArea.value = this.dataContnet;
+			this.codeArea.value = this.dataContent;
 			this.codeArea.placeholder = `Address(Decimal) : Data(1 Byte, Decimal)
 8000 : 5`;
 		} else if (this.currentTab === "execution") {
