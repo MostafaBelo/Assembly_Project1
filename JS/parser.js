@@ -3,6 +3,7 @@ export class Parser {
 	data = "";
 	labels = {};
 	intsructions = [];
+	data_input = [];
 	constructor(codeFile, dataFile) {
 		if (codeFile !== undefined) this.takeCode(codeFile);
 		if (dataFile !== undefined) this.takeData(dataFile);
@@ -114,6 +115,14 @@ export class Parser {
 
 	seperate_data()
 	{
+		let arr = this.data.split('\n');
+		arr = arr.filter(function(elem){return elem !== ''});
+		for (let i = 0; i < arr.length; i++)
+		{
+			arr[i].replaceAll(' ', '');
+			let line = arr[i].split(':');
+			this.data_input([parseInt(line[0]), parseInt(line[1])]);
+		}
 
 	}
 }
