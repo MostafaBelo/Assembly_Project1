@@ -2,6 +2,7 @@ import { convertToHexAndBinary } from "./dataConversions";
 
 class UI {
 	codeAreaWrapper = document.getElementById("codeArea");
+	codeLineHighlight = document.getElementById("highlight-line");
 	codeLineNumbersArea = document.getElementById("codeLineNumbers");
 	codeArea = document.getElementById("code");
 	regsArea = document.getElementById("regs");
@@ -203,6 +204,10 @@ class UI {
 			if (this.currentTab !== "execution") {
 				this.setCurrentTab("execution");
 			}
+
+			this.codeLineHighlight.style.top = `${
+				1.2 * this.flow.currentInstruction
+			}rem`;
 		} else {
 			this.code_actions_btns.play_btn.style.display = "flex";
 			this.code_actions_btns.stop_btn.style.display = "none";
@@ -218,21 +223,27 @@ class UI {
 		if (this.currentTab === "code") {
 			this.code_tabs.code_tab.classList.add("selected");
 
+			this.codeArea.disabled = false;
+			this.codeLineHighlight.style.display = "none";
 			this.codeArea.value = this.codeContent;
 			this.codeArea.placeholder = "";
 		} else if (this.currentTab === "data") {
 			this.code_tabs.data_tab.classList.add("selected");
 
+			this.codeArea.disabled = false;
+			this.codeLineHighlight.style.display = "none";
 			this.codeArea.value = this.dataContent;
 			this.codeArea.placeholder = `Address(Decimal) : Data(1 Byte, Decimal)
 8000 : 5`;
 		} else if (this.currentTab === "execution") {
 			this.code_tabs.execution_tab.classList.add("selected");
 
-			this.codeArea.value = "";
+			this.codeArea.disabled = true;
+			this.codeLineHighlight.style.display = "block";
+			this.codeArea.value = this.computeExecutionContent();
 			this.codeArea.placeholder = "";
 
-			// TODO: show the commands and highlight the current
+			// TODO: highlight the current
 		}
 
 		this.update();
@@ -343,6 +354,21 @@ class UI {
 		}
 
 		this.updateCodeTab();
+	}
+
+	computeExecutionContent() {
+		let ins = this.flow.parser.instructions;
+		let res = [];
+		for (let i = 0; i < ins.length; i++) {
+			let line = ins[i][0];
+			if (ins[i].length > 1) {
+				line += " ";
+				line += ins[i].slice(1).join(",");
+			}
+			res.push(line);
+		}
+		res = res.join("\n");
+		return res;
 	}
 }
 

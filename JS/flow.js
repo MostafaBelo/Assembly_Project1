@@ -51,7 +51,6 @@ export class Flow {
 		if (this.isPlaying) return;
 
 		this.isPlaying = true;
-		this.ui.setCurrentTab("execution"); // implicitly calls update
 
 		regs.init();
 		RAM.init();
@@ -62,6 +61,7 @@ export class Flow {
 
 		let instructionAddress = this.ui.instructionAddress;
 		PC.setPC(instructionAddress);
+		PC.setInitial(instructionAddress);
 
 		// call parser and save its outcome for later execution (maybe as it is already saved in the parser)
 		this.parser.takeCode(AssemblyCode);
@@ -81,7 +81,8 @@ export class Flow {
 		// load data file into memory
 		this.loadDataInMemory();
 
-		this.ui.update();
+		this.ui.setCurrentTab("execution"); // implicitly calls update
+		// this.ui.update();
 	}
 
 	executeNext() {
@@ -244,7 +245,7 @@ export class Flow {
 			default:
 				// handle unknown command
 				this.isPlaying = false;
-				this.currentInstruction++;
+				// this.currentInstruction++;
 				break;
 		}
 
