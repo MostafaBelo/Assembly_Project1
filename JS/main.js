@@ -16,4 +16,5 @@ RAM.write1(8017, 4);
 RAM.write1(8008, 106);
 
 flow.setupUI(ui);
+flow.setParser(new Parser());
 ui.setup(regs, RAM, PC, flow);

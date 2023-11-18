@@ -42,5 +42,5 @@ par.validate_code();
 par.validate_data();
 
 par.seperate_code();
-// console.log(par.labels);
-// console.log(par.intsructions);
+console.log(par.labels);
+console.log(par.intsructions);

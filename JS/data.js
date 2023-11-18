@@ -154,6 +154,7 @@ export class Memory {
 
 export class ProgramCounter {
 	pc = 0;
+	initial = 0;
 	constructor() {}
 
 	getPC() {
@@ -165,12 +166,20 @@ export class ProgramCounter {
 		this.pc = value;
 	}
 
+	setInitial(newInitial) {
+		this.initial = newInitial;
+	}
+
 	incrementPC(jumpValue = 4) {
 		this.pc += jumpValue;
 	}
 
 	decrementPC(jumpValue = 4) {
 		this.pc -= jumpValue;
+	}
+
+	setPCOffset(offset) {
+		this.setPC(this.initial + offset * 4);
 	}
 }
 export const regs = new RegisterFile();
