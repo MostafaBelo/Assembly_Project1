@@ -110,35 +110,105 @@ export class Flow {
 	executeCommand() {
 		const instruction = this.getInstructions()[this.currentInstruction]; // [command, register1, register2, etc]
 		let command = instruction[0];
+		let rs1Value;
+		let rs2Value;
+		let rdValue;
 		switch (command) {
 			case "add":
-				let rs1Value = regs.read(instruction[2]);
-				let rs2Value = regs.read(instruction[3]);
-				let rdValue = rs1Value + rs2Value;
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value + rs2Value;
 				regs.write(instruction[1], rdValue);
 
 				this.currentInstruction++;
 				break;
 			case "addi":
-				// execute addi command
+				rs1Value = regs.read(instruction[2])
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value + rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
 			case "sub":
-				// execute sub command
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value - rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
-			case "mul":
-				// execute mul command
-				break;
-			case "div":
-				// execute div command
+			case "subi":
+				rs1Value = regs.read(instruction[2])
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value - rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
 			case "and":
-				// execute and command
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value & rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "andi":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value & rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
 			case "or":
-				// execute or command
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value | rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "ori":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value | rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
 			case "xor":
-				// execute xor command
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value ^ rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "xori":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value ^ rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "srl":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value >>> rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "srli":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value >>> rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
 				break;
 			case "jal":
 				// execute jal command
