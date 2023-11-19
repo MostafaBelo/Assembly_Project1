@@ -224,24 +224,155 @@ export class Flow {
 
 				this.currentInstruction++;
 				break;
+			case "sra":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value >> rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "srai":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value >> rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "slt":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				if (rs1Value < rs2Value)
+					rdValue = 1;
+				else
+					rdValue = 0;
+
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "slti":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "sltu":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				if (rs2Value < 0 && rs1Value >= 0)
+					rdValue = 1;
+				else
+					rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "sltiu":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+
+				if(rs2Value < 0 && rs1Value >= 0)
+					rdValue;
+				else
+					rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "lui":
+				rs1Value = parseInt(instruction[2]);
+				rdValue = rs1Value << 12;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "sll":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = regs.read(instruction[3]);
+				rdValue = rs1Value << rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "slli":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = rs1Value << rs2Value;
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			
 			case "jal":
-				// execute jal command
+				rdValue = this.currentInstruction;
+				regs.write(instruction[1], rdValue);
+				this.currentInstruction = this.getLabels[instruction[2]];
 				break;
 			case "jalr":
-				// execute jalr command
+				rdValue = this.currentInstruction;
+				regs.write(instruction[1], rdValue);
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				//How to access memory here to get the data in data for example 8000?
 				break;
 			case "beq":
-				// execute beq command
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs1Value == rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+					this.currentInstruction++;
 				break;
 			case "bne":
-				// execute bne command
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs1Value != rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+					this.currentInstruction++;
 				break;
 			case "blt":
-				// execute blt command
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs1Value < rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+					this.currentInstruction++;
 				break;
 			case "bge":
-				// execute bge command
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs1Value >= rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+					this.currentInstruction++;
 				break;
+			case "bltu":
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs2Value < 0 && rs1Value >= 0)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else if (rs1Value < rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+					this.currentInstruction++;
+				break;
+			case "bgeu":
+				rs1Value = regs.read(instruction[1]);
+				rs2Value = regs.read(instruction[2]);
+				if (rs1Value < 0 && rs2Value >= 0)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else if (rs1Value >= rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else
+				this.currentInstruction++;
+				break;
+			
+
 			default:
 				// handle unknown command
 				this.isPlaying = false;
