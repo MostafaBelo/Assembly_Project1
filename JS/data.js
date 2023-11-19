@@ -181,6 +181,10 @@ export class ProgramCounter {
 	setPCOffset(offset) {
 		this.setPC(this.initial + offset * 4);
 	}
+
+	getPCOffset(address) {
+		return (address - this.initial) / 4;
+	}
 }
 export const regs = new RegisterFile();
 export const RAM = new Memory();

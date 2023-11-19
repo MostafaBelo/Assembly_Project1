@@ -243,10 +243,8 @@ export class Flow {
 			case "slt":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = regs.read(instruction[3]);
-				if (rs1Value < rs2Value)
-					rdValue = 1;
-				else
-					rdValue = 0;
+				if (rs1Value < rs2Value) rdValue = 1;
+				else rdValue = 0;
 
 				regs.write(instruction[1], rdValue);
 
@@ -255,7 +253,7 @@ export class Flow {
 			case "slti":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
-				rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				rdValue = rs1Value < rs2Value ? 1 : 0;
 				regs.write(instruction[1], rdValue);
 
 				this.currentInstruction++;
@@ -263,10 +261,8 @@ export class Flow {
 			case "sltu":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = regs.read(instruction[3]);
-				if (rs2Value < 0 && rs1Value >= 0)
-					rdValue = 1;
-				else
-					rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				if (rs2Value < 0 && rs1Value >= 0) rdValue = 1;
+				else rdValue = rs1Value < rs2Value ? 1 : 0;
 				regs.write(instruction[1], rdValue);
 
 				this.currentInstruction++;
@@ -275,10 +271,8 @@ export class Flow {
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 
-				if(rs2Value < 0 && rs1Value >= 0)
-					rdValue;
-				else
-					rdValue = (rs1Value < rs2Value) ? 1 : 0;
+				if (rs2Value < 0 && rs1Value >= 0) rdValue;
+				else rdValue = rs1Value < rs2Value ? 1 : 0;
 				regs.write(instruction[1], rdValue);
 
 				this.currentInstruction++;
@@ -306,50 +300,46 @@ export class Flow {
 
 				this.currentInstruction++;
 				break;
-			
+
 			case "jal":
-				rdValue = this.currentInstruction;
+				rdValue = PC.getPC() + 4;
 				regs.write(instruction[1], rdValue);
-				this.currentInstruction = this.getLabels[instruction[2]];
+				this.currentInstruction = this.getLabels()[instruction[2]];
 				break;
 			case "jalr":
-				rdValue = this.currentInstruction;
+				rdValue = PC.getPC() + 4;
 				regs.write(instruction[1], rdValue);
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
-				//How to access memory here to get the data in data for example 8000?
+				this.currentInstruction = PC.getPCOffset(rs1Value + rs2Value);
 				break;
 			case "beq":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value == rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-					this.currentInstruction++;
+					this.currentInstruction = this.getLabels()[instruction[3]];
+				else this.currentInstruction++;
 				break;
 			case "bne":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value != rs2Value)
 					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-					this.currentInstruction++;
+				else this.currentInstruction++;
 				break;
 			case "blt":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value < rs2Value)
 					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-					this.currentInstruction++;
+				else this.currentInstruction++;
 				break;
 			case "bge":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value >= rs2Value)
 					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-					this.currentInstruction++;
+				else this.currentInstruction++;
 				break;
 			case "bltu":
 				rs1Value = regs.read(instruction[1]);
@@ -358,8 +348,7 @@ export class Flow {
 					this.currentInstruction = this.getLabels(instruction[3]);
 				else if (rs1Value < rs2Value)
 					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-					this.currentInstruction++;
+				else this.currentInstruction++;
 				break;
 			case "bgeu":
 				rs1Value = regs.read(instruction[1]);
@@ -368,10 +357,8 @@ export class Flow {
 					this.currentInstruction = this.getLabels(instruction[3]);
 				else if (rs1Value >= rs2Value)
 					this.currentInstruction = this.getLabels(instruction[3]);
-				else
-				this.currentInstruction++;
+				else this.currentInstruction++;
 				break;
-			
 
 			default:
 				// handle unknown command
