@@ -1,0 +1,315 @@
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 19 22:58:48 2023 +0200
+
+    Seperate into Code and Test Folders
+
+commit e0e06ceab1a70e8b1cf00d8d39cf1852ba20a91f
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 19 22:48:15 2023 +0200
+
+    lui,auipc,validation,memory bounds
+
+commit 29ee88ef1b6c9b5722779a59ccca6bbcf5149605
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 20:39:42 2023 +0200
+
+    trimming of the ecalls
+
+commit c7c164ac12be329eda542e48b6d01ef84542f820
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 20:32:27 2023 +0200
+
+    handled negative numbers in loading
+
+commit 2ed44b57a4336349aa618ff43ca3915f3d7dc571
+Merge: 985d913 195cab5
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 20:12:31 2023 +0200
+
+    Merge branch 'main' of https://github.com/MostafaBelo/Assembly_Project1
+
+commit 985d9134b7cd0d99d0105edd264a219b55f3748e
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 20:12:20 2023 +0200
+
+    negative values fixed in binary conversion
+
+commit 195cab53415be87f0e2099d3fbb7313c70c5bdeb
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sun Nov 19 17:43:43 2023 +0200
+
+    Returned the bltu and bgeu to the former form
+
+commit b2cee01054fd8a2fc7eb14ded4a12fcd22278152
+Merge: 8804026 7a87ca7
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 16:58:55 2023 +0200
+
+    Merge branch 'main' of https://github.com/MostafaBelo/Assembly_Project1
+
+commit 88040266b20ccf0accc70eb7905dc2000a97a9e8
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sun Nov 19 16:58:49 2023 +0200
+
+    all comands are handled except "ecall, ebreak, fence", and they needed to be reviewed one last time
+
+commit 7a87ca78be12b2ccccf588896379c69731c60a6e
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sun Nov 19 16:22:05 2023 +0200
+
+    Changed it so that only the command will get lowercased.
+
+commit e9857c28b9e0f742913e7624c54d06f628458202
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 19 13:34:56 2023 +0200
+
+    added PC get offset, and fixed a few commands (jal, jalr, beq)
+
+commit 520c2a9c4a7b1423393b03b1ae309c60db3a3002
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sun Nov 19 02:44:54 2023 +0200
+
+    I added all the commands, except the ones where we access the memory itself. I need to know how we're going to access the memory if it's address
+es of lines.
+
+commit 43e7e0c968db7af66511c861b227c90156080ca0
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sat Nov 18 21:24:36 2023 +0200
+
+    highlight command while executing
+
+commit 87b6560f211781bdc5f57d944abffc9ce9be0c20
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sat Nov 18 20:36:30 2023 +0200
+
+    small bug fixes
+
+commit a909664a1a4f2335aae7128d754db9b0506505ea
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 16:19:11 2023 +0200
+
+    Added some commands, going to finish after I get home
+
+commit 2a5c17b717247f9aa75b708562c813caf33699c2
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 14:36:19 2023 +0200
+
+    Made it so that all the code would be turned to lowercase
+
+commit 9736027f7f88f53d1b9ad486fe4fabe1117082e3
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 13:31:58 2023 +0200
+
+    Added the "Seperate_data" function that seperates the instructions to write into the data directly into an array of numbers
+
+commit 7e29eb532949ceb92d154a82af6b8df21b2ddc10
+Merge: 174861a a915cb8
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sat Nov 18 12:20:58 2023 +0200
+
+    Merge branch 'main' of https://github.com/MostafaBelo/Assembly_Project1
+
+commit 174861a5d9dad7b701089c1eb7febf93469937ae
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Sat Nov 18 12:12:54 2023 +0200
+
+    solved all the corner cases for the code validation except the offset case
+
+commit a915cb8f29f69d13268702a10b3dbbb5a2a4e68b
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sat Nov 18 01:11:31 2023 +0200
+
+    connecting flow to parser(calling it), and structure the skeleton for execute command
+
+commit f144e756aa4fd46a52847a4c9a9e2d1087000cfb
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 00:44:20 2023 +0200
+
+    Removed )
+
+commit 45fcf334013a6d66c810860097ff66449a4c12b7
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 00:43:45 2023 +0200
+
+    remove brackets
+
+commit cd78d14048810ec014f3a680eb13a4de40512a10
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 00:39:35 2023 +0200
+
+    Fixed the offset
+
+commit a8cc691cf6ca7b3059b10672e91710356bd7cf38
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Sat Nov 18 00:32:54 2023 +0200
+
+    Added condition if it has offset to make it a 2nd element.
+
+commit f2ab8099af5e7d51c22c065ed918bcce6937d445
+Author: Ali Elkhouly <mostafaelfaggal@gmail.com>
+Date:   Fri Nov 17 22:10:46 2023 +0200
+
+    connected the ui to the PC
+
+commit 125209b5eb8f5e830f9e962dcb1136c60374660e
+Author: Ali Elkhouly <mostafaelfaggal@gmail.com>
+Date:   Fri Nov 17 21:48:49 2023 +0200
+
+    cleaned parser.js, file still has bugs in validation code
+
+commit 43bb6b43781b3763e8649870b9b242b350d453da
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Fri Nov 17 21:40:43 2023 +0200
+
+    added some cases in executeCommand() function
+
+commit 89347dcdf2ddf0ddd1f6edf287bc1440a874a3a2
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Fri Nov 17 19:40:36 2023 +0200
+
+    did the validation for the code and the data, added the pc, and the init function
+
+commit a2046817856291cc691a14543a76ca9b45430271
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Fri Nov 17 10:56:53 2023 +0200
+
+    created flow.js file and started connecting it to the ui
+
+commit 8421a867fc8e824a1c7c76d36bb68e06416b8569
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Thu Nov 16 16:48:36 2023 +0200
+
+    tested parser
+
+commit 64c8e2280ac7da95db50ef6cdc03789c193d1131
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Thu Nov 16 16:29:30 2023 +0200
+
+    parser
+
+commit 57b8c97205b1734a8cafce1bc06a49110756d9e1
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Wed Nov 15 21:46:44 2023 +0200
+
+    linked ui with new register file, and split test into its own file
+
+commit 94b4bb419574815a21dc7513f234354f95d69bde
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Wed Nov 15 20:38:29 2023 +0200
+
+    register file : read & write & get index
+
+commit 3a6747fc45e469659135fcf59a8a582d67f2c543
+Merge: 389bb72 9051055
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Wed Nov 15 19:52:40 2023 +0200
+
+    added: padding + validation for writing + merging + some test cases
+
+commit 389bb72895d55cb4f2378d63c5e5a7f6459df391
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Wed Nov 15 19:09:09 2023 +0200
+
+    Added: padding + validation for write + test cases
+
+commit 90510557408d775ebbad623dc694920e8d641279
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Tue Nov 14 13:23:03 2023 +0200
+
+    data writing section for injecting data into memory
+
+commit 2106b2cb700ebd934b70bd67bb181aa5c6a28144
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Tue Nov 14 12:52:38 2023 +0200
+
+    file picker
+
+commit f3d094e80fc83097f19ec87c170baf1c2b1d8a32
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Tue Nov 14 11:50:12 2023 +0200
+
+    goto memory address
+
+commit 1055e68571740a40aa684a58097caf8d5e459fa6
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 22:18:31 2023 +0200
+
+    move the test cases to main.js
+
+commit b59c56c24b919670d5ef6278dbf9a8acd980f6e1
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 21:33:59 2023 +0200
+
+    ui reflects format
+
+commit bb98ddc55c154c26c0c584aed1eb8b4220ee3df2
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 21:00:23 2023 +0200
+
+    actions play/stop switching
+
+commit 9b252042f6c3237538f1565f621e5ef6507be516
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 19:43:50 2023 +0200
+
+    gui added buttons and details panel, w/o update functionality
+
+commit 8ea1fab4e4c5c09dee6e985e4cd49c981c46c2ad
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Mon Nov 13 19:16:56 2023 +0200
+
+    dataConversions function done
+
+commit b8dd85c002c4b55a1a64602f629af5ccec9213f0
+Author: Ali Elkhouly <khoulykid@aucegypt.edu>
+Date:   Mon Nov 13 13:59:31 2023 +0200
+
+    fixed minor bugs
+
+commit f39be945cfd438f7b8c908bd471b1289c66ac507
+Author: Raef Hany <98807473+Raef-Hany@users.noreply.github.com>
+Date:   Mon Nov 13 13:31:49 2023 +0200
+
+    memory class, read, write
+
+commit 020947a952174642a42b511605b6cba4ff846e80
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 13:24:21 2023 +0200
+
+    ui update function
+
+commit dd11065a8b3e232a863a3135334b15ac6cafbaf7
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 12:44:19 2023 +0200
+
+    split the data from gui.js
+
+commit 770884019bac2c4c81918d0310f76837a6e8ced3
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 12:30:36 2023 +0200
+
+    use webpak to bundle split js files
+
+commit c7755aa3c6531a3368f25321193046ef9af8a8f0
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Mon Nov 13 01:13:04 2023 +0200
+
+    gui code section, line numbering, scrolling
+
+commit 075b8971420eab3171f30e9262a30b5e9ca519b6
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 12 23:49:48 2023 +0200
+
+    gui memory and table redesign
+
+commit dcac7cea65a9c069738de7b6b0b42764b4fa5abe
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 12 23:15:50 2023 +0200
+
+    gui registers
+
+commit 8471c0d853ca538afe69abed8c6d4c7fa438694e
+Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 12 22:21:20 2023 +0200
+
+    init
