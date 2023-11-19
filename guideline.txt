@@ -1,3 +1,10 @@
+commit 026e938019870723a33a54b028a906e13012d7a9
+Author: MostafaBelo <mostafaelfaggal@gmail.com>
+Date:   Sun Nov 19 23:40:12 2023 +0200
+
+    fixed negative number representation in hexa/binary
+
+commit c3897082f0987ddcc524095a37c6398e1c0cbcb5
 Author: Mostafa Elfaggal <mostafaelfaggal@gmail.com>
 Date:   Sun Nov 19 22:58:48 2023 +0200
 
