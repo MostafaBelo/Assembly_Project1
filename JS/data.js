@@ -94,18 +94,15 @@ export class RegisterFile {
 }
 export class Memory {
 	mem = {};
-	memorySize = 0xffffffff + 1;
-	constructor(size) {
-		if (size !== undefined) {
-			this.memorySize = size;
-		}
-	}
+	memorySizeUpper = 0x7fffffff;
+	memorySizeLower = 0xffffffff;
+	constructor() {}
 
 	read1(address) {
 		return this.mem[address] || 0;
 	}
 	write1(address, value) {
-		if (address < 0 || address >= this.memorySize) {
+		if (this.isInBounds(address)) {
 			throw new Error("Address out of bounds");
 		}
 
@@ -119,7 +116,7 @@ export class Memory {
 		return (higher8Bits << 8) | lower8Bits;
 	}
 	write2(address, value) {
-		if (address < 0 || address >= this.memorySize) {
+		if (this.isInBounds(address)) {
 			throw new Error("Address out of bounds");
 		}
 		value = value & 0xffff;
@@ -135,7 +132,7 @@ export class Memory {
 		return (higher16Bits << 16) | lower16Bits;
 	}
 	write4(address, value) {
-		if (address < 0 || address >= this.memorySize) {
+		if (this.isInBounds(address)) {
 			throw new Error("Address out of bounds");
 		}
 		value = value & 0xffffffff;
@@ -145,6 +142,10 @@ export class Memory {
 
 		this.write2(address, lower16Bits);
 		this.write2(address + 1, higher16Bits);
+	}
+
+	isInBounds(address) {
+		return address >= this.memorySizeLower && address <= this.memorySizeUpper;
 	}
 
 	init() {

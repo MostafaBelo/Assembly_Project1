@@ -31,7 +31,11 @@ subi  t0,  x3 , 5
 L2:
 jal ra, L1
 beq t0, t1,  L2
-JALR zero, 0(x1)`,
+JALR zero, 0(x1)
+lui t5 , 34
+L3 : addi xo,t1,5
+ecall
+end: Ecall`,
 	`8000: 5
 8024:87
 21 :93

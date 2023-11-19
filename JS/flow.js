@@ -52,28 +52,32 @@ export class Flow {
 
 		this.isPlaying = true;
 
-		regs.init();
-		RAM.init();
-		this.currentInstruction = 0;
-
 		let AssemblyCode = this.ui.codeContent;
 		let DataCode = this.ui.dataContent;
-
-		let instructionAddress = this.ui.instructionAddress;
-		PC.setPC(instructionAddress);
-		PC.setInitial(instructionAddress);
 
 		// call parser and save its outcome for later execution (maybe as it is already saved in the parser)
 		this.parser.takeCode(AssemblyCode);
 		this.parser.takeData(DataCode);
 		if (!this.parser.validate_code()) {
-			console.log("Invalid Code");
+			alert("Failed to parse code");
+			this.isPlaying = false;
+			return;
 		}
 		if (!this.parser.validate_data()) {
-			console.log("Invalid Data file");
+			alert("Failed to parse data file");
+			this.isPlaying = false;
+			return;
 		}
 		this.parser.seperate_code();
 		this.parser.seperate_data();
+
+		regs.init();
+		RAM.init();
+		this.currentInstruction = 0;
+
+		let instructionAddress = this.ui.instructionAddress;
+		PC.setPC(instructionAddress);
+		PC.setInitial(instructionAddress);
 
 		// initialize registers with zeros, sp with max memory, and look into gp and tp
 		regs.write("sp", 0xffffffff); // this is the last memory address, stack grows up
@@ -112,7 +116,6 @@ export class Flow {
 	}
 
 	loadDataInMemory() {
-		console.log("data content", this.parser.data_input);
 		for (let i = 0; i < this.parser.data_input.length; i++) {
 			RAM.write1(this.parser.data_input[i][0], this.parser.data_input[i][1]);
 		}
@@ -149,14 +152,6 @@ export class Flow {
 			case "sub":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = regs.read(instruction[3]);
-				rdValue = rs1Value - rs2Value;
-				regs.write(instruction[1], rdValue);
-
-				this.currentInstruction++;
-				break;
-			case "subi": // not part of the ISA
-				rs1Value = regs.read(instruction[2]);
-				rs2Value = parseInt(instruction[3]);
 				rdValue = rs1Value - rs2Value;
 				regs.write(instruction[1], rdValue);
 
@@ -281,7 +276,17 @@ export class Flow {
 				break;
 			case "lui":
 				rs1Value = parseInt(instruction[2]);
-				rdValue = rs1Value << 12;
+				rdValue = regs.read(instruction[1]);
+				rdValue = rdValue & 0xfff;
+				rdValue = rdValue | (rs1Value << 12);
+
+				regs.write(instruction[1], rdValue);
+
+				this.currentInstruction++;
+				break;
+			case "auipc":
+				rs1Value = parseInt(instruction[2]);
+				rdValue = PC.getPC() + (rs1Value << 12);
 				regs.write(instruction[1], rdValue);
 
 				this.currentInstruction++;
@@ -373,7 +378,7 @@ export class Flow {
 
 				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
-				break;	
+				break;
 			case "lh":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
@@ -393,6 +398,7 @@ export class Flow {
 				rdValue = RAM.read4(rs1Value + rs2Value);
 				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
+				break;
 			case "lbu":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
@@ -414,19 +420,19 @@ export class Flow {
 			case "sb":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
-				RAM.write1(rs1Value + rs2Value, regs.read1(instruction[1]));
+				RAM.write1(rs1Value + rs2Value, regs.read(instruction[1]));
 				this.currentInstruction++;
 				break;
 			case "sh":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
-				RAM.write2(rs1Value + rs2Value, regs.read2(instruction[1]));
+				RAM.write2(rs1Value + rs2Value, regs.read(instruction[1]));
 				this.currentInstruction++;
 				break;
 			case "sw":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
-				RAM.write4(rs1Value + rs2Value, regs.read4(instruction[1]));
+				RAM.write4(rs1Value + rs2Value, regs.read(instruction[1]));
 				this.currentInstruction++;
 				break;
 			case "ecall":
@@ -441,8 +447,6 @@ export class Flow {
 				this.isPlaying = false;
 				this.currentInstruction++;
 				break;
-			
-
 
 			default:
 				// handle unknown command

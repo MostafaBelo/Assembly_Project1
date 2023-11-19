@@ -21,6 +21,7 @@ export class Parser {
 			return false;
 		}
 
+		if (data_file === "") return true;
 		const lines = data_file.trim().split("\n");
 		const regex = /^\s*\d+\s*:\s*\d+\s*$/;
 
@@ -38,31 +39,57 @@ export class Parser {
 			return false;
 		}
 
-		const lines = code.trim().split("\n");
+		const lines = code.replaceAll("\t", " ").trim().split("\n");
 		const rTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
+			/^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*$/; // Matches instructions like "ADD rd, rs1, rs2"
 		const iTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*(\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
-		const jTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*(\d+)\s*$/; // Matches instructions like "JAL rd, immediate"
-		const uTypeRegex = /^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*(\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
+			/^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*(-?\d+)\s*$/; // Matches instructions like "ADDI rd, rs, immediate"
+		const sTypeRegex =
+			/^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)s*,\s*(-?\d+)\(([a-zA-Z]\w*)\)\s*$/; // Matches instructions like "SW rs1, immediate(rs2)"
+		const uTypeRegex = /^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*(-?\d+)\s*$/; // Matches instructions like "LUI rd, immediate"
 		const sbTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)s*,\s*(\d+)\s*$/; // Matches instructions like "BEQ rs1, rs2, immediate"
-		const ujTypeRegex =
-			/^\s*([a-zA-Z]\w*)\s+([a-zA-Z]\w*)s*,\s*([a-zA-Z]\w*|[\w:]+)\s*$/; // Matches instructions like "JAL rd, immediate"
+			/^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)s*,\s*(\w+)\s*$/; // Matches instructions like "BEQ rs1, rs2, lbl"
+		const ujTypeRegex = /^\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)s*,\s*(\w+)\s*$/; // Matches instructions like "JAL rd, lbl"
+		const pauseTypeRegex = /^\s*(ecall|ebreak|fence)\s*$/i;
+
 		const labelRegex = /^\s*([a-zA-Z]\w*)\s*:\s*$/; // Matches labels like "L1:"
+		const labelrTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*$/;
+		const labeliTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)\s*,\s*(-?\d+)\s*$/;
+		const labelsTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)s*,\s*(-?\d+)\(([a-zA-Z]\w*)\)\s*$/;
+		const labeluTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*(-?\d+)\s*$/;
+		const labelsbTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)\s*,\s*([a-zA-Z]\w*)s*,\s*(\w+)\s*$/;
+		const labelujTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*([a-zA-Z]+)\s+([a-zA-Z]\w*)s*,\s*(\w+)\s*$/;
+		const labelpauseTypeRegex =
+			/^\s*([a-zA-Z]\w*)\s*:\s*(ecall|ebreak|fence)\s*$/i;
 
 		const regexArr = [
 			rTypeRegex,
 			iTypeRegex,
-			jTypeRegex,
+			sTypeRegex,
 			uTypeRegex,
 			sbTypeRegex,
 			ujTypeRegex,
+			pauseTypeRegex,
 			labelRegex,
+			labelrTypeRegex,
+			labeliTypeRegex,
+			labelsTypeRegex,
+			labeluTypeRegex,
+			labelsbTypeRegex,
+			labelujTypeRegex,
+			labelpauseTypeRegex,
 		];
 
-		for (const line of lines) {
+		for (let line of lines) {
 			let isValid = false;
+			line = line.trim();
+			if (line === "") continue;
 			for (const regex of regexArr) {
 				if (line.match(regex)) {
 					isValid = true;
@@ -71,10 +98,8 @@ export class Parser {
 			}
 
 			if (!isValid) {
-				console.log("Line is not valid", line);
-				// return false; // TODO: uncomment this line after fixing the bugs in validation
-			} else {
-				console.log("Line is valid", line);
+				console.log("fail", line);
+				return false;
 			}
 		}
 		return true;
@@ -84,12 +109,14 @@ export class Parser {
 		this.labels = {};
 		this.instructions = [];
 
-		let arr = this.code.split("\n");
+		let arr = this.code.replaceAll("\t", " ").split("\n");
 		arr = arr.filter(function (elem) {
+			elem = elem.replaceAll(" ", "");
 			return elem !== "";
 		});
 
 		for (let i = 0; i < arr.length; i++) {
+			arr[i] = arr[i].trim();
 			if (arr[i].includes(":")) {
 				let arr2 = arr[i].split(":");
 				arr2[0] = arr2[0].replaceAll(" ", "");
@@ -103,17 +130,17 @@ export class Parser {
 		}
 
 		for (let i = 0; i < arr.length; i++) {
-			arr[i] = arr[i].trim();
-			if (arr[i] === "ecall" || arr[i] === "ebreak" || arr[i] === "fence") {
+			let tmp = arr[i].trim().toLowerCase();
+			if (tmp === "ecall" || tmp === "ebreak" || tmp === "fence") {
 				this.instructions.push([arr[i]]);
 				continue;
 			}
 
+			arr[i] = arr[i].trim();
 			let index = arr[i].indexOf(" ");
 			let command = arr[i].slice(0, index);
-			let label_end;
 			command = command.toLowerCase();
-				
+
 			let rest = arr[i].slice(index);
 			rest = rest.replaceAll(" ", "");
 			let registers = rest.split(",");
