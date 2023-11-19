@@ -324,41 +324,109 @@ export class Flow {
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value != rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
+					this.currentInstruction = this.getLabels()[instruction[3]];
 				else this.currentInstruction++;
 				break;
 			case "blt":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value < rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
+					this.currentInstruction = this.getLabels()[instruction[3]];
 				else this.currentInstruction++;
 				break;
 			case "bge":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
 				if (rs1Value >= rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
+					this.currentInstruction = this.getLabels()[instruction[3]];
 				else this.currentInstruction++;
 				break;
 			case "bltu":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
-				if (rs2Value < 0 && rs1Value >= 0)
-					this.currentInstruction = this.getLabels(instruction[3]);
-				else if (rs1Value < rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
+				rs1Value = rs1Value >>> 0;
+				rs2Value = rs2Value >>> 0;
+				if (rs1Value < rs2Value)
+					this.currentInstruction = this.getLabels()[instruction[3]];
 				else this.currentInstruction++;
 				break;
 			case "bgeu":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
-				if (rs1Value < 0 && rs2Value >= 0)
-					this.currentInstruction = this.getLabels(instruction[3]);
-				else if (rs1Value >= rs2Value)
-					this.currentInstruction = this.getLabels(instruction[3]);
+				rs1Value = rs1Value >>> 0;
+				rs2Value = rs2Value >>> 0;
+				if (rs1Value < rs2Value)
+					this.currentInstruction = this.getLabels()[instruction[3]];
 				else this.currentInstruction++;
 				break;
+			case "lb":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = RAM.read1(rs1Value + rs2Value);
+				regs.write1(instruction[1], rdValue);
+				this.currentInstruction++;
+				break;	
+			case "lh":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = RAM.read2(rs1Value + rs2Value);
+				regs.write2(instruction[1], rdValue);
+				this.currentInstruction++;
+				break;
+			case "lw":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rdValue = RAM.read4(rs1Value + rs2Value);
+				regs.write4(instruction[1], rdValue);
+				this.currentInstruction++;
+			case "lbu":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rs1Value = rs1Value >>> 0;
+				rs2Value = rs2Value >>> 0;
+				rdValue = RAM.read1(rs1Value + rs2Value);
+				regs.write1(instruction[1], rdValue);
+				this.currentInstruction++;
+				break;
+			case "lhu":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				rs1Value = rs1Value >>> 0;
+				rs2Value = rs2Value >>> 0;
+				rdValue = RAM.read2(rs1Value + rs2Value);
+				regs.write2(instruction[1], rdValue);
+				this.currentInstruction++;
+				break;
+			case "sb":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				RAM.write1(rs1Value + rs2Value, regs.read1(instruction[1]));
+				this.currentInstruction++;
+				break;
+			case "sh":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				RAM.write2(rs1Value + rs2Value, regs.read2(instruction[1]));
+				this.currentInstruction++;
+				break;
+			case "sw":
+				rs1Value = regs.read(instruction[2]);
+				rs2Value = parseInt(instruction[3]);
+				RAM.write4(rs1Value + rs2Value, regs.read4(instruction[1]));
+				this.currentInstruction++;
+				break;
+			case "ecall": // is this correct?
+				this.isPlaying = false;
+				this.currentInstruction++;
+				break;
+			case "ebreak":
+
+				break;
+			case "fence":
+				
+				break;
+			
+
 
 			default:
 				// handle unknown command
