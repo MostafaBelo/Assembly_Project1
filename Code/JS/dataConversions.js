@@ -10,15 +10,14 @@ export function convertToHexAndBinary(decimalValue, valueSize = 32) {
 		temp = temp << valueSize;
 		decimalValue = decimalValue | temp;
 	}
-	
-	
+
 	const hexValue =
 		"0x" +
-		decimalValue
+		(decimalValue >>> 0)
 			.toString(16)
 			.toUpperCase()
 			.padStart(valueSize / 4, "0");
-	const binaryValue = "0b" + decimalValue.toString(2).padStart(valueSize, "0");
+	const binaryValue =
+		"0b" + (decimalValue >>> 0).toString(2).padStart(valueSize, "0");
 	return [decimalValue, hexValue, binaryValue];
-
 }
