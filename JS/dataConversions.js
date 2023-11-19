@@ -1,7 +1,6 @@
 export function convertToHexAndBinary(decimalValue, valueSize = 32) {
 	// Convert to 2's complement
 	let sign = decimalValue >> (valueSize - 1);
-	console.log(sign, decimalValue, valueSize);
 	if (sign == 1) {
 		let temp = 1;
 		for (let i = 0; i < 32 - valueSize - 1; i++) {

@@ -127,6 +127,8 @@ export class Flow {
 		let rs1Value;
 		let rs2Value;
 		let rdValue;
+		let sign;
+
 		switch (command) {
 			case "add":
 				rs1Value = regs.read(instruction[2]);
@@ -363,21 +365,33 @@ export class Flow {
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 				rdValue = RAM.read1(rs1Value + rs2Value);
-				regs.write1(instruction[1], rdValue);
+
+				sign = rdValue >> 7;
+				if (sign == 1) {
+					rdValue = rdValue | 0xffffff00;
+				}
+
+				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
 				break;	
 			case "lh":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 				rdValue = RAM.read2(rs1Value + rs2Value);
-				regs.write2(instruction[1], rdValue);
+
+				sign = rdValue >> 15;
+				if (sign == 1) {
+					rdValue = rdValue | 0xffff0000;
+				}
+
+				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
 				break;
 			case "lw":
 				rs1Value = regs.read(instruction[2]);
 				rs2Value = parseInt(instruction[3]);
 				rdValue = RAM.read4(rs1Value + rs2Value);
-				regs.write4(instruction[1], rdValue);
+				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
 			case "lbu":
 				rs1Value = regs.read(instruction[2]);
@@ -385,7 +399,7 @@ export class Flow {
 				rs1Value = rs1Value >>> 0;
 				rs2Value = rs2Value >>> 0;
 				rdValue = RAM.read1(rs1Value + rs2Value);
-				regs.write1(instruction[1], rdValue);
+				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
 				break;
 			case "lhu":
@@ -394,7 +408,7 @@ export class Flow {
 				rs1Value = rs1Value >>> 0;
 				rs2Value = rs2Value >>> 0;
 				rdValue = RAM.read2(rs1Value + rs2Value);
-				regs.write2(instruction[1], rdValue);
+				regs.write(instruction[1], rdValue);
 				this.currentInstruction++;
 				break;
 			case "sb":
@@ -415,15 +429,17 @@ export class Flow {
 				RAM.write4(rs1Value + rs2Value, regs.read4(instruction[1]));
 				this.currentInstruction++;
 				break;
-			case "ecall": // is this correct?
+			case "ecall":
 				this.isPlaying = false;
 				this.currentInstruction++;
 				break;
 			case "ebreak":
-
+				this.isPlaying = false;
+				this.currentInstruction++;
 				break;
 			case "fence":
-				
+				this.isPlaying = false;
+				this.currentInstruction++;
 				break;
 			
 
