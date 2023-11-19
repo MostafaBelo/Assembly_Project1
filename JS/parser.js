@@ -103,11 +103,11 @@ export class Parser {
 		}
 
 		for (let i = 0; i < arr.length; i++) {
+			arr[i] = arr[i].trim();
 			if (arr[i] === "ecall" || arr[i] === "ebreak" || arr[i] === "fence") {
 				this.instructions.push([arr[i]]);
 				continue;
 			}
-
 
 			let index = arr[i].indexOf(" ");
 			let command = arr[i].slice(0, index);
