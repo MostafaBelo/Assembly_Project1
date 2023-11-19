@@ -344,19 +344,19 @@ export class Flow {
 			case "bltu":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
-				rs1Value = rs1Value >>> 0;
-				rs2Value = rs2Value >>> 0;
-				if (rs1Value < rs2Value)
-					this.currentInstruction = this.getLabels()[instruction[3]];
+				if (rs2Value < 0 && rs1Value >= 0)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else if (rs1Value < rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
 				else this.currentInstruction++;
 				break;
 			case "bgeu":
 				rs1Value = regs.read(instruction[1]);
 				rs2Value = regs.read(instruction[2]);
-				rs1Value = rs1Value >>> 0;
-				rs2Value = rs2Value >>> 0;
-				if (rs1Value < rs2Value)
-					this.currentInstruction = this.getLabels()[instruction[3]];
+				if (rs1Value < 0 && rs2Value >= 0)
+					this.currentInstruction = this.getLabels(instruction[3]);
+				else if (rs1Value >= rs2Value)
+					this.currentInstruction = this.getLabels(instruction[3]);
 				else this.currentInstruction++;
 				break;
 			case "lb":
