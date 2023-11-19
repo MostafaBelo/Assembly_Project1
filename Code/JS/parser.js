@@ -23,7 +23,7 @@ export class Parser {
 
 		if (data_file === "") return true;
 		const lines = data_file.trim().split("\n");
-		const regex = /^\s*\d+\s*:\s*\d+\s*$/;
+		const regex = /^\s*\d+\s*:\s*-?\d+\s*$/;
 
 		for (const line of lines) {
 			const match = line.match(regex);
